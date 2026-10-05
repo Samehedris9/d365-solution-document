@@ -1,0 +1,3463 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Process & Solution Design Document - D365 Business Central | ABC Counsel & Africa Company</title>
+
+    <!-- Google Fonts: Alexandria & Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-accent: #1e293b;
+            --secondary: #2563eb;
+            --secondary-light: #eff6ff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --bg-paper: #ffffff;
+            --bg-light: #f8fafc;
+            --border-color: #cbd5e1;
+            --shadow-paper: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+            --role-color-1: #1e3a8a;
+            --role-color-2: #0284c7;
+            --role-color-3: #0d9488;
+            --role-color-4: #d97706;
+            --role-color-5: #4f46e5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Alexandria', 'Cairo', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Interactive Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(8px);
+        }
+
+        .toolbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .toolbar-brand img {
+            height: 38px;
+            object-fit: contain;
+        }
+
+        .toolbar-brand h1 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            width: 220px;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.25rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-word {
+            background-color: #107c41;
+            color: white;
+        }
+
+        .btn-word:hover {
+            background-color: #0b582e;
+            box-shadow: 0 4px 12px rgba(16, 124, 65, 0.25);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Document Wrapper */
+        .doc-wrapper {
+            max-width: 1100px;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* A4 Page Styling */
+        .a4-page {
+            background: var(--bg-paper);
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 14mm 18mm 14mm 18mm;
+            box-shadow: var(--shadow-paper);
+            position: relative;
+            box-sizing: border-box;
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: visible;
+        }
+
+        /* Header & Footer on Pages */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.65rem;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        .page-header-logos {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .logo-abc {
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .logo-africa {
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .doc-meta {
+            text-align: left;
+            direction: ltr;
+        }
+
+        .doc-meta strong {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+
+        .doc-meta span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Cover Page Styling (Page 1) */
+        .cover-page {
+            position: relative;
+            padding: 2.5rem 3.5rem !important;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #ffffff;
+            border-top: 8px solid var(--primary);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .cover-bg-tech {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .cover-hero-center {
+            position: relative;
+            z-index: 2;
+            margin: auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cover-logo-large {
+            max-width: 480px;
+            max-height: 110px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 2rem;
+        }
+
+        .cover-tagline {
+            display: inline-block;
+            background: var(--secondary-light);
+            color: var(--secondary);
+            padding: 0.4rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.925rem;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .cover-doc-title {
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .cover-doc-subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .cover-details-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(248, 250, 252, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            direction: ltr;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(4px);
+        }
+
+        .cover-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem 2rem;
+        }
+
+        .cover-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cover-detail-label {
+            font-size: 0.775rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+
+        .cover-detail-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .cover-detail-value-ar {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            direction: rtl;
+            display: inline-block;
+            margin-top: 0.1rem;
+        }
+
+        /* Product Logos Row on Cover Page */
+        .cover-product-logos {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .cover-product-logo-item {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        /* Closing Page Styling (Page 16) */
+        .closing-page {
+            position: relative;
+            padding: 0 !important;
+            background: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .closing-bg-ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .closing-hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 4.5rem;
+            margin-bottom: auto;
+            direction: ltr;
+        }
+
+        .closing-logo-large {
+            max-width: 520px;
+            max-height: 130px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 0.85rem;
+            filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.06));
+        }
+
+        .closing-slogan {
+            font-family: 'Alexandria', 'Cairo', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .closing-info-box {
+            align-self: flex-end;
+            margin-top: auto;
+            margin-bottom: 2rem;
+            margin-right: 0.5rem;
+            text-align: left;
+            direction: ltr;
+            font-family: 'Alexandria', 'Cairo', sans-serif;
+            width: 100%;
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 2rem 2.25rem;
+            border-radius: 14px;
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        }
+
+        .closing-copyright-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.65rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .closing-web-link {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1.1rem;
+        }
+
+        .closing-address-text {
+            font-size: 0.925rem;
+            font-weight: 500;
+            color: #475569;
+            line-height: 1.65;
+            margin-bottom: 1.1rem;
+        }
+
+        .closing-email-text {
+            font-size: 0.925rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .closing-footer {
+            position: relative;
+            z-index: 2;
+            margin-top: 0;
+            padding: 1rem 3.5rem 1.5rem 3.5rem;
+            background: transparent;
+            border-top: none;
+        }
+
+        /* Headings */
+        h2.section-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.4rem;
+            margin-top: 0.6rem;
+            margin-bottom: 0.85rem;
+        }
+
+        h3.subsection-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.85rem;
+            margin-bottom: 0.45rem;
+        }
+
+        h4.heading-4 {
+            font-size: 0.975rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 0.75rem;
+            margin-bottom: 0.35rem;
+        }
+
+        p {
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: #334155;
+            text-align: justify;
+        }
+
+        ul {
+            margin-right: 1.5rem;
+            margin-bottom: 0.85rem;
+        }
+
+        li {
+            font-size: 0.875rem;
+            margin-bottom: 0.3rem;
+            color: #334155;
+        }
+
+        code {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.825rem;
+            color: #d97706;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        /* Data Tables General */
+        .data-table-wrapper {
+            margin: 0.85rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.825rem;
+        }
+
+        .data-table th {
+            background-color: var(--primary);
+            color: white;
+            text-align: right;
+            padding: 0.6rem 0.9rem;
+            font-weight: 700;
+        }
+
+        .data-table td {
+            padding: 0.55rem 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: var(--bg-light);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Specific Compact Styling for Page 2 (Table of Contents & Company Profile) */
+        #page-2 .section-title {
+            font-size: 1.15rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.25rem;
+        }
+
+        #page-2 .data-table-wrapper {
+            margin: 0.35rem 0 0.6rem 0;
+        }
+
+        #page-2 .data-table {
+            font-size: 0.74rem;
+        }
+
+        #page-2 .data-table th {
+            padding: 0.35rem 0.65rem;
+        }
+
+        #page-2 .data-table td {
+            padding: 0.25rem 0.65rem;
+        }
+
+        #page-2 .company-profile-box {
+            padding: 0.5rem 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+
+        #page-2 .company-profile-box h3 {
+            font-size: 0.925rem;
+            margin-bottom: 0.2rem;
+        }
+
+        #page-2 .company-profile-box p {
+            font-size: 0.78rem;
+            line-height: 1.45;
+            margin-bottom: 0;
+        }
+
+        /* Intro Boxes */
+        .company-profile-box,
+        .exec-summary-box,
+        .procurement-intro-box,
+        .inventory-intro-box,
+        .sales-intro-box {
+            background: #ffffff;
+            border-right: 4px solid var(--secondary);
+            border-left: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .company-profile-box p,
+        .exec-summary-box p,
+        .procurement-intro-box p,
+        .inventory-intro-box p,
+        .sales-intro-box p {
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            text-align: justify;
+        }
+
+        .company-profile-box p:last-child,
+        .exec-summary-box p:last-child,
+        .procurement-intro-box p:last-child,
+        .inventory-intro-box p:last-child,
+        .sales-intro-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Flowcharts & Diagram Cards */
+        .diagram-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 0.65rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            text-align: center;
+        }
+
+        .diagram-card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .diagram-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 260px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        /* Process Flow UI */
+        .process-flow-container {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 0.9rem;
+            margin: 0.65rem 0;
+        }
+
+        .process-flow-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .roles-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .role-badge {
+            font-size: 0.725rem;
+            font-weight: 700;
+            padding: 0.18rem 0.55rem;
+            border-radius: 9999px;
+            color: white;
+            background: var(--primary-accent);
+        }
+
+        .role-badge.r-1 {
+            background-color: var(--role-color-1);
+        }
+
+        .role-badge.r-2 {
+            background-color: var(--role-color-2);
+        }
+
+        .role-badge.r-3 {
+            background-color: var(--role-color-3);
+        }
+
+        .role-badge.r-4 {
+            background-color: var(--role-color-4);
+        }
+
+        .role-badge.r-5 {
+            background-color: var(--role-color-5);
+        }
+
+        .flow-steps-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .flow-step-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.55rem 0.8rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .flow-step-num {
+            background: var(--secondary-light);
+            color: var(--secondary);
+            font-weight: 800;
+            font-size: 0.825rem;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .flow-step-content {
+            flex-grow: 1;
+        }
+
+        .flow-step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.15rem;
+        }
+
+        .flow-step-title {
+            font-weight: 700;
+            font-size: 0.825rem;
+            color: var(--primary);
+        }
+
+        .flow-step-role {
+            font-size: 0.675rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .flow-step-desc {
+            font-size: 0.785rem;
+            color: #475569;
+            margin: 0;
+            line-height: 1.48;
+        }
+
+        .branch-paths {
+            margin-top: 0.35rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 0.35rem;
+        }
+
+        .branch-box {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 4px;
+            border-right: 3px solid #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .branch-box.approved {
+            border-right-color: #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .branch-box.rejected {
+            border-right-color: #ef4444;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .branch-box.cash {
+            border-right-color: #3b82f6;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .branch-box.check {
+            border-right-color: #8b5cf6;
+            background: #f5f3ff;
+            color: #5b21b6;
+        }
+
+        .tb-badge {
+            display: inline-block;
+            background-color: #f3f4f6;
+            color: #6b7280;
+            font-size: 0.725rem;
+            font-weight: 600;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px dashed #d1d5db;
+        }
+
+        .page-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.5rem;
+            margin-top: auto;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Perfect Print Rules */
+        @media print {
+
+            html,
+            body {
+                width: 210mm !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .toolbar {
+                display: none !important;
+            }
+
+            .doc-wrapper {
+                width: 210mm !important;
+                max-width: 210mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+            }
+
+            .a4-page {
+                width: 210mm !important;
+                min-height: 297mm !important;
+                height: auto !important;
+                max-height: none !important;
+                margin: 0 !important;
+                padding: 10mm 12mm 10mm 12mm !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-sizing: border-box !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: auto !important;
+                break-inside: auto !important;
+                overflow: visible !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+
+            .a4-page:first-child {
+                page-break-before: avoid !important;
+                break-before: avoid !important;
+            }
+
+            .a4-page:last-child {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+
+            .page-header {
+                flex-shrink: 0 !important;
+                margin-bottom: 0.6rem !important;
+            }
+
+            .page-footer {
+                flex-shrink: 0 !important;
+                margin-top: auto !important;
+                padding-top: 0.4rem !important;
+            }
+
+            .page-content {
+                flex: 1 0 auto !important;
+            }
+
+            .diagram-card,
+            .process-flow-container,
+            .flow-step-card,
+            .company-profile-box,
+            .data-table-wrapper,
+            .cover-details-card,
+            .closing-info-box,
+            .roles-bar {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            @page {
+                size: 210mm 297mm;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating Header Toolbar -->
+    <header class="toolbar">
+        <div class="toolbar-brand">
+            <img src="abc_logo.png" alt="ABC Counsel">
+            <h1>Business Process & Solution Design Document</h1>
+        </div>
+        <div class="toolbar-actions">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="بحث في المستند..." onkeyup="filterContent()">
+            </div>
+            <button class="btn btn-outline" onclick="scrollToTOC()">
+                📋 المحتويات
+            </button>
+            <button class="btn btn-word" onclick="exportToWord()">
+                📝 تحميل ملف Word (.doc)
+            </button>
+            <button class="btn btn-primary" onclick="window.print()">
+                🖨️ طباعة / حفظ PDF
+            </button>
+        </div>
+    </header>
+
+    <div class="doc-wrapper">
+
+        <!-- ================= PAGE 1: TITLE COVER PAGE ================= -->
+        <section class="a4-page cover-page" id="page-1">
+            <svg class="cover-bg-tech" viewBox="0 0 794 1123" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="coverBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#f8fafc" />
+                    </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#coverBgGrad)" />
+                <g stroke="#cbd5e1" stroke-width="0.75" opacity="0.35" stroke-dasharray="4,4">
+                    <line x1="0" y1="120" x2="794" y2="120" />
+                    <line x1="0" y1="350" x2="794" y2="350" />
+                    <line x1="0" y1="880" x2="794" y2="880" />
+                    <line x1="150" y1="0" x2="150" y2="1123" />
+                    <line x1="644" y1="0" x2="644" y2="1123" />
+                </g>
+                <g opacity="0.25">
+                    <circle cx="150" cy="120" r="4" fill="#2563eb" />
+                    <circle cx="644" cy="120" r="4" fill="#2563eb" />
+                    <circle cx="150" cy="880" r="4" fill="#2563eb" />
+                    <circle cx="644" cy="880" r="4" fill="#2563eb" />
+                    <path d="M 644 120 L 700 120 L 700 250" fill="none" stroke="#2563eb" stroke-width="1.5" />
+                    <circle cx="700" cy="250" r="5" fill="#2563eb" />
+                    <path d="M 150 880 L 100 880 L 100 750" fill="none" stroke="#2563eb" stroke-width="1.5" />
+                    <circle cx="100" cy="750" r="5" fill="#2563eb" />
+                </g>
+            </svg>
+
+            <div class="cover-hero-center">
+                <img src="abc_logo.png" alt="ABC Counsel Logo" class="cover-logo-large">
+                <div class="cover-tagline">SPECIALIZED CONSULTING COMPANY</div>
+
+                <h1 class="cover-doc-title">وثيقة تصميم الحلول والدورات المستندية</h1>
+                <div class="cover-doc-subtitle">Microsoft Dynamics 365 Business Central Implementation</div>
+            </div>
+
+            <div class="cover-details-card">
+                <div class="cover-details-grid">
+                    <div class="cover-detail-item">
+                        <span class="cover-detail-label">Prepared For</span>
+                        <span class="cover-detail-value">Africa Company</span>
+                        <span class="cover-detail-value-ar">(الشركة الأفريقية للأمن والحراسة)</span>
+                    </div>
+
+                    <div class="cover-detail-item">
+                        <span class="cover-detail-label">Implementing Partner</span>
+                        <span class="cover-detail-value">ABC Counsel</span>
+                        <span class="cover-detail-value-ar">(الشركة المنفذة)</span>
+                    </div>
+
+                    <div class="cover-detail-item">
+                        <span class="cover-detail-label">Report Document</span>
+                        <span class="cover-detail-value">D365 Business Central Implementation</span>
+                    </div>
+
+                    <div class="cover-detail-item">
+                        <span class="cover-detail-label">Date</span>
+                        <span class="cover-detail-value">September 2026</span>
+                        <span class="cover-detail-value-ar">(سبتمبر 2026)</span>
+                    </div>
+
+                    <div class="cover-detail-item" style="grid-column: span 2;">
+                        <span class="cover-detail-label">Business Central Solution</span>
+                        <span class="cover-detail-value" style="color: #2563eb;">Business Central Solution: [To Be
+                            Defined]</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Microsoft & Dynamics 365 BC Logos -->
+            <div class="cover-product-logos">
+                <img src="microsoft_logo.png" alt="Microsoft Logo" class="cover-product-logo-item">
+                <div style="width: 1px; height: 24px; background: #e2e8f0;"></div>
+                <img src="d365_bc_logo.png" alt="Microsoft Dynamics 365 Business Central"
+                    class="cover-product-logo-item">
+            </div>
+
+            <div class="page-footer" style="position: relative; z-index: 2; border-top: none;">
+                <span>© 2026 ABC Counsel & Africa Company. All Rights Reserved.</span>
+                <span>Document Version 1.0 (Final)</span>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 2: TABLE OF CONTENTS & COMPANY PROFILE ================= -->
+        <section class="a4-page" id="page-2">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title" id="toc-section">جدول المحتويات التنفيذي</h2>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">الصفحة</th>
+                                <th style="width: 45%;">القسم / الموديول الوظيفي</th>
+                                <th style="width: 45%;">نطاق التطبيق والتصميم</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>01</strong></td>
+                                <td><strong>غلاف الوثيقة الرسمي</strong></td>
+                                <td>تفاصيل المشروع، الشركاء، الشعارات الرسمية بالإنجليزية</td>
+                            </tr>
+                            <tr>
+                                <td><strong>02</strong></td>
+                                <td><strong>جدول المحتويات ونبذة الشركات</strong></td>
+                                <td>جدول الفهرس، نبذة عن الشركة الأفريقية وشركة ABC Counsel</td>
+                            </tr>
+                            <tr>
+                                <td><strong>03</strong></td>
+                                <td><strong>الملخص التنفيذي والأهداف</strong></td>
+                                <td>الرؤية الاستراتيجية، الأهداف التشغيلية والنطاق العام</td>
+                            </tr>
+                            <tr>
+                                <td><strong>04</strong></td>
+                                <td><strong>المالية: الحسابات العامة والموردين</strong></td>
+                                <td>شجرة الحسابات، دمج الذمم الدائنة والتوجيه المحاسبي</td>
+                            </tr>
+                            <tr>
+                                <td><strong>05</strong></td>
+                                <td><strong>المالية: الخزينة والبنوك</strong></td>
+                                <td>مخطط ودورة النقدية والبنوك وإدارة المقبوضات والمصروفات</td>
+                            </tr>
+                            <tr>
+                                <td><strong>06</strong></td>
+                                <td><strong>المالية: تحصيل العملاء الغير مباشرين</strong></td>
+                                <td>مخطط ودورة تحصيل العملاء الغير مباشرين، المراجعة وإثبات الاستحقاق والسداد</td>
+                            </tr>
+                            <tr>
+                                <td><strong>07</strong></td>
+                                <td><strong>المالية: العُهد النقدية</strong></td>
+                                <td>مخطط ودورة صرف وتصفية العُهد النقدية والفرعية</td>
+                            </tr>
+                            <tr>
+                                <td><strong>08</strong></td>
+                                <td><strong>المالية: السلَف والمدفوعات المقدمة</strong></td>
+                                <td>مخطط ودورة صرف وسداد السلَف والمدفوعات المقدمة</td>
+                            </tr>
+                            <tr>
+                                <td><strong>09</strong></td>
+                                <td><strong>المالية: مدفوعات الموردين واعتمادات الصرف</strong></td>
+                                <td>مخطط ودورة اعتمادات الصرف وصرف مستحقات الموردين</td>
+                            </tr>
+                            <tr>
+                                <td><strong>10</strong></td>
+                                <td><strong>إدارة المشتريات</strong></td>
+                                <td>مخطط ودورة المشتريات الكاملة من الطلب حتى الاستلام والفوترة</td>
+                            </tr>
+                            <tr>
+                                <td><strong>11</strong></td>
+                                <td><strong>إدارة المخازن (الجزء الأول)</strong></td>
+                                <td>الهيكل الفني للمخازن، التتبع والتحويلات المباشرة</td>
+                            </tr>
+                            <tr>
+                                <td><strong>12</strong></td>
+                                <td><strong>إدارة المخازن (الجزء الثاني)</strong></td>
+                                <td>مخطط ودورة استقالة وإرجاع عهدة المخازن والتصفية</td>
+                            </tr>
+                            <tr>
+                                <td><strong>13</strong></td>
+                                <td><strong>التسويق (عروض الأسعار)</strong></td>
+                                <td>مخطط ودورة التسويق وتسعير تقديم خدمات التأمين والمشاريع</td>
+                            </tr>
+                            <tr>
+                                <td><strong>14</strong></td>
+                                <td><strong>إدارة المبيعات (الخطوات الـ 7)</strong></td>
+                                <td>خطوات دورة المبيعات الـ 7 التفصيلية والتوجيه المحاسبي</td>
+                            </tr>
+                            <tr>
+                                <td><strong>15</strong></td>
+                                <td><strong>إدارة المبيعات (مخطط أمر المبيعات)</strong></td>
+                                <td>مخطط دورة أمر المبيعات (Sales Order Flow) والخطوات الـ 4 التفصيلية</td>
+                            </tr>
+                            <tr>
+                                <td><strong>16</strong></td>
+                                <td><strong>الأصول الثابتة (الإعداد والعمليات)</strong></td>
+                                <td>دورة الحياة، بطاقة الأصل، إثبات الاستحواذ، الإهلاك، والصيانة والاستبعاد</td>
+                            </tr>
+                            <tr>
+                                <td><strong>17</strong></td>
+                                <td><strong>الأصول الثابتة (المخطط والفئات)</strong></td>
+                                <td>مخطط مشتريات الأصول الثابتة، الخطوات الـ 6، وفئات الإهلاك بالحسابات العامة</td>
+                            </tr>
+                            <tr>
+                                <td><strong>18</strong></td>
+                                <td><strong>صفحة الخاتمة والتواصل</strong></td>
+                                <td>بيانات الاتصال بشركة ABC Counsel والسلوجان الرسمي</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="section-title">نبذة عن الشركات والشركاء</h2>
+                <div class="company-profile-box">
+                    <h3 class="subsection-title" style="margin-top: 0;">الشركة الأفريقية للأمن والحراسة (Africa Company)
+                    </h3>
+                    <p>
+                        تُعد الشركة الأفريقية للأمن والحراسة إحدى الشركات الرائدة في تقديم الخدمات الأمنية المتكاملة
+                        وحراسة المنشآت الحيوية والتأمين الشامل. تسعى الشركة من خلال تطبيق نظام Microsoft Dynamics 365
+                        Business Central إلى بناء بنيان رقمي حديث يدعم التوسع المستمر ويرفع كفاءة إدارة العقود والعمليات
+                        المالية والمخزنية والمشتريات.
+                    </p>
+                </div>
+
+                <div class="company-profile-box" style="border-right-color: var(--primary);">
+                    <h3 class="subsection-title" style="margin-top: 0;">شركة ABC Counsel (الشركة المنفذة)</h3>
+                    <p>
+                        تُعتبر شركة ABC Counsel مؤسسة استشارية متخصصة (Specialized Consulting Company) في تقديم حلول
+                        التحول الرقمي وإعادة هندسة العمليات وتطبيق أنظمة ERP التابعة لشركة Microsoft. تمتلك الشركة
+                        فريقاً ممتازاً من الاستشاريين ذوي الخبرة العالية في تحويل المتطلبات التشغيلية المعقدة إلى دورات
+                        مستندية مؤتمتة وموثوقة.
+                    </p>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 2 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 3: EXECUTIVE SUMMARY ================= -->
+        <section class="a4-page" id="page-3">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الملخص التنفيذي والأهداف الاستراتيجية</h2>
+
+                <div class="exec-summary-box">
+                    <h3 class="subsection-title" style="margin-top: 0;">الرؤية العامة للمشروع</h3>
+                    <p>
+                        تهدف هذه الوثيقة إلى وضع التصميم المتكامل للدورات المستندية والعمليات المالية والتشغيلية الخاصة
+                        بالشركة الأفريقية للأمن والحراسة (Africa Company) على نظام Microsoft Dynamics 365 Business
+                        Central.
+
+                        تم إعداد هذا التصميم بواسطة شركة ABC Counsel بهدف بناء إطار متكامل لإدارة ومراقبة العمليات
+                        المالية والتشغيلية، بما يضمن الرقابة الدقيقة على المقبوضات والمصروفات، وتنظيم عمليات المشتريات
+                        والمخازن والمبيعات والتسويق، بالإضافة إلى إدارة الأصول الثابتة، بما يدعم كفاءة العمليات ويرفع
+                        مستوى الرقابة والشفافية.
+
+                        كما يهدف التصميم إلى توحيد الإجراءات ودورات العمل بين الإدارات المختلفة، وتحسين تدفق البيانات
+                        والمعلومات، وتوفير تقارير ومؤشرات أداء دقيقة ولحظية تساعد الإدارة العليا في المتابعة والتحليل
+                        واتخاذ القرارات، مع الاستفادة من الإمكانيات القياسية لنظام Microsoft Dynamics 365 Business
+                        Central بما يتوافق مع طبيعة ومتطلبات أعمال الشركة.
+
+                    </p>
+                </div>
+
+                <h3 class="subsection-title">الأهداف الاستراتيجية للتطبيق</h3>
+                <div class="flow-steps-grid" style="margin-bottom: 1.25rem;">
+                    <div class="flow-step-card">
+                        <div class="flow-step-num">1</div>
+                        <div class="flow-step-content">
+                            <div class="flow-step-title">أتمتة الدورات المستندية وتوحيد إجراءات العمل</div>
+                            <div class="flow-step-desc">الربط الكامل بين القطاعات المالية والإدارية والمخزنية لضمان
+                                سريان البيانات دون تكرار أو تدرب يدوي.</div>
+                        </div>
+                    </div>
+                    <div class="flow-step-card">
+                        <div class="flow-step-num">2</div>
+                        <div class="flow-step-content">
+                            <div class="flow-step-title">إحكام الرقابة المالية وإدارة السيولة</div>
+                            <div class="flow-step-desc">متابعة دقيقة لحركة الخزائن والتحصيلات، وضبط صرف العُهد والسلَف
+                                ومدفوعات الموردين من خلال الصلاحيات واعتمادات الصرف.</div>
+                        </div>
+                    </div>
+                    <div class="flow-step-card">
+                        <div class="flow-step-num">3</div>
+                        <div class="flow-step-content">
+                            <div class="flow-step-title">تتبع حركة المخزون والعهد الحينية</div>
+                            <div class="flow-step-desc">إدارة المستودعات، السيريال/اللوت، وتتبع تسليم وإرجاع عهد المهمات
+                                والمعدات عند استقالة العاملين أو نقلهم.</div>
+                        </div>
+                    </div>
+                    <div class="flow-step-card">
+                        <div class="flow-step-num">4</div>
+                        <div class="flow-step-content">
+                            <div class="flow-step-title">توليد تقارير مالية وتشغيلية موثوقة</div>
+                            <div class="flow-step-desc">دعم متخذي القرار بتقارير أرباح وخسائر، تدفقات نقدية، وإعمار ديون
+                                لحظية بدقة متناهية.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">نطاق تطبيق الموديولات الوظيفية</h3>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">الموديول الرئيسي</th>
+                                <th style="width: 45%;">النطاق الوظيفي المغطى</th>
+                                <th style="width: 30%;">حالة التطبيق</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>الإدارة المالية (Financials)</strong></td>
+                                <td>دفتر الأستاذ العام، الذمم، الخزينة، العُهد، السلَف، تحصيل الديون</td>
+                                <td><span class="tb-badge" style="background:#ecfdf5; color:#065f46;">مغطى
+                                        بالكامل</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>إدارة المشتريات (Procurement)</strong></td>
+                                <td>طلب الشراء، RFQ، أمر الشراء، استلام البضاعة، فواتير الشراء</td>
+                                <td><span class="tb-badge" style="background:#ecfdf5; color:#065f46;">مغطى
+                                        بالكامل</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>إدارة المخازن (Inventory)</strong></td>
+                                <td>تكويد المواد، التتبع، أذون الصرف والإضافة، عهد العاملين والتصفية</td>
+                                <td><span class="tb-badge" style="background:#ecfdf5; color:#065f46;">مغطى
+                                        بالكامل</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>إدارة المبيعات (Sales)</strong></td>
+                                <td>عروض الأسعار، أمر البيع، الشحن، الفوترة، سداد العملاء</td>
+                                <td><span class="tb-badge" style="background:#ecfdf5; color:#065f46;">مغطى
+                                        بالكامل</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>الأصول الثابتة (Fixed Assets)</strong></td>
+                                <td>سجل الأصول، فئات الأصول، الإهلاك الدوري والتوجيه المحاسبي تلقائياً</td>
+                                <td><span class="tb-badge" style="background:#ecfdf5; color:#065f46;">مغطى
+                                        بالكامل</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 3 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 4: FINANCIALS PART 1 ================= -->
+        <section class="a4-page" id="page-4">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: الحسابات العامة والموردين (GL & AP)</h2>
+
+                <p>
+                    تُعتبر الإدارة المالية هي النواة المركزية لنظام Microsoft Dynamics 365 Business Central في الشركة
+                    الأفريقية للأمن والحراسة (Africa Company). يضمن موديول الحسابات العامة توجيه كافة المعاملات المالية
+                    الناتجة عن المشتريات، المبيعات، الخزينة، الأصول، والرواتب آلياً وبدقة عالية.
+                </p>
+
+                <h3 class="subsection-title">1. دليل الحسابات وأبعاد التحليل (Chart of Accounts & Dimensions)</h3>
+                <p>
+                    تم تصميم شجرة الحسابات وفقاً للمعايير المحاسبية الدولية، مع تزويد النظام بأبعاد تحليلية (Dimensions)
+                    لمركز التكلفة (Cost Center)، المشروع، والفرع لضمان استخراج تقارير ربحية متقدمة على مستوى كل موقع
+                    أمني أو عقد خدمة.
+                </p>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رمز الحساب</th>
+                                <th>اسم الحساب المحاسبي</th>
+                                <th>نوع الحساب</th>
+                                <th>التوجيه التلقائي في النظام</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>111001</code></td>
+                                <td>الصندوق الرئيسي - الخزينة العامة</td>
+                                <td>أصول متداولة</td>
+                                <td>مقبوضات ومصروفات الخزينة الرئيسية</td>
+                            </tr>
+                            <tr>
+                                <td><code>112001</code></td>
+                                <td>بنك مصر - حساب جاري بالجنيه</td>
+                                <td>أصول متداولة</td>
+                                <td>التسويات البنكية والتحويلات</td>
+                            </tr>
+                            <tr>
+                                <td><code>113001</code></td>
+                                <td>ذمم العملاء (حساب تجميعي)</td>
+                                <td>أصول متداولة</td>
+                                <td>فواتير المبيعات ومقبوضات العملاء</td>
+                            </tr>
+                            <tr>
+                                <td><code>211001</code></td>
+                                <td>موردو البضائع والخدمات (تجميعي)</td>
+                                <td>الزامات متداولة</td>
+                                <td>استلام فواتير المشتريات وصرف المستحقات</td>
+                            </tr>
+                            <tr>
+                                <td><code>114001</code></td>
+                                <td>عُهد نقدية مؤقتة ومستديمة</td>
+                                <td>أصول متداولة</td>
+                                <td>صرف وتصفية عُهد الموظفين</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="subsection-title">2. موديول الموردين والذمم الدائنة (Accounts Payable)</h3>
+                <p>
+                    يرتبط موديول الموردين بشكل مباشر بموديول المشتريات، حيث يتم مطابقة فاتورة المورد تلقائياً مع أمر
+                    الشراء (Purchase Order) وإذن استلام البضاعة (Purchase Receipt) لمنع أي تكرار أو خطأ في الصرف.
+                </p>
+
+                <div class="company-profile-box" style="border-right-color: #0284c7;">
+                    <h4 class="heading-4" style="margin-top: 0;">ضوابط اعتماد صرف فواتير الموردين:</h4>
+                    <ul>
+                        <li>مطابقة ثلاثية (Three-Way Matching) بين أمر الشراء ومحضر الاستلام وفاتورة المورد.</li>
+                        <li>إصدار نموذج اعتمادات الصرف الإلكتروني قبل التحويل البنكي أو إصدار الشيك.</li>
+                        <li>تأكيد حظر الصرف في حالة وجود أي عيوب أو ملاحظات جودة على المهمات المستلمة.</li>
+                    </ul>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 4 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 5: FINANCIALS PART 2 ================= -->
+        <section class="a4-page" id="page-5">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: الخزينة والبنوك - Treasury &amp; Cash Management</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة إدارة وتمويل الخزينة (Treasury Funding Process Flow)</span>
+                        <span class="tb-badge">شكل رقم (1)</span>
+                    </div>
+                    <img src="treasury_chart.png" alt="Treasury Funding Chart" class="diagram-img"
+                        style="max-height: 330px; width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) تمويل الخزنة ضمن الإدارة المالية، والتي يتم تنفيذها بالتعاون بين
+                        محاسب الخزنة والإدارة العليا. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة تمويل الخزنة:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">محاسب الخزنة</span>
+                        <span class="role-badge r-4">الإدارة العليا</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">تبدأ الدورة بطلب تمويل الخزنة.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إنشاء طلب صرف</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">يقوم محاسب الخزنة بإنشاء طلب صرف
+                                    عن طريق قيد.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إرسال الطلب إلى الإدارة
+                                        العليا</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">يتم إرسال طلب الصرف إلى الإدارة
+                                    العليا للمراجعة والاعتماد.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">الموافقة والمراجعة</span>
+                                    <span class="flow-step-role">الإدارة العليا</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تقوم الإدارة العليا بمراجعة الطلب واتخاذ القرار بناءً على حالتين:<br>
+                                    • <strong>في حالة "رفض":</strong> يتم إعادة الطلب لتعديله أو إرساله مرة أخرى.<br>
+                                    • <strong>في حالة "موافق":</strong> يتم الانتقال للخطوة التالية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">اعتماد شيك التحويل أو
+                                        القيد</span>
+                                    <span class="flow-step-role">الإدارة العليا</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">بعد الموافقة، تقوم الإدارة العليا
+                                    بإعتماد شيك التحويل أو القيد الخاص بتمويل الخزنة.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">ترحيل القيد</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">يتلقى محاسب الخزنة الاعتماد ويقوم
+                                    بترحيل القيد في النظام المحاسبي.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">7</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">صرف المبلغ وتمويل
+                                        الخزنة</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">يتم صرف المبلغ المطلوب ووضع
+                                    النقدية أو التمويل الفعلي داخل الخزنة.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">8</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">النهاية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">تنتهي الدورة بنجاح تمويل الخزنة
+                                    وإتمام العملية.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 5 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 6: FINANCIALS PART 3 ================= -->
+        <section class="a4-page" id="page-6">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: تحصيل العملاء الغير مباشرين (Customer Collection Management)
+                </h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة تحصيل العملاء الغير مباشرين (Customer Collection Process Flow)</span>
+                        <span class="tb-badge">شكل رقم (2)</span>
+                    </div>
+                    <img src="collection_chart.png" alt="Customer Collection Chart" class="diagram-img"
+                        style="max-height: 700px; width: 100%; display: block; margin: 0 auto; object-fit: contain;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) تحصيـل العملاء ضمن الإدارة المالية، والتي يتم تنفيذها من خلال عدة
+                        أدوار رئيسية تشمل: محاسب العملاء، العميل، محاسب العملاء (إثبات الاستحقاق)، ومحاسب الخزينة
+                        (التحصيل). إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة تحصيل العملاء:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">محاسب العملاء</span>
+                        <span class="role-badge r-2">العميل</span>
+                        <span class="role-badge r-3">محاسب العملاء (إثبات الاستحقاق)</span>
+                        <span class="role-badge r-4">محاسب الخزينة (التحصيل)</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وإنشاء الفاتورة
+                                        المبدئية</span>
+                                    <span class="flow-step-role">محاسب العملاء</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تبدأ الدورة من عند محاسب العملاء بإنشاء فاتورة مبدئية للعميل.<br>
+                                    • يتم إرسال نسخة مبدئية من الفاتورة إلى العميل للمراجعة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة الفاتورة من قِبل
+                                        العميل</span>
+                                    <span class="flow-step-role">العميل</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يقوم العميل باستلام نسخة الفاتورة المبدئية ومراجعتها، وهنا يتفرع المسار إلى
+                                    حالتين:<br>
+                                    • <strong>حالة "تحتاج تعديل":</strong> يقوم العميل بإرسال التعديلات والملاحظات
+                                    المطلوبة إلى محاسب العملاء. يستلم محاسب العملاء الملاحظات، ويقوم بتعديل بيانات
+                                    الفاتورة بناءً عليها، ثم يعيد إرسالها للعميل.<br>
+                                    • <strong>حالة "موافق":</strong> يقوم العميل بإرسال الموافقة بعمل فاتورة نهائية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مرحلة إثبات
+                                        الاستحقاق</span>
+                                    <span class="flow-step-role">محاسب العملاء (الإثبات)</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يقوم محاسب العملاء (الإثبات) بترحيل فاتورة المبيعات من أمر البيع.<br>
+                                    • يتم ترحيل فاتورة العميل لمحاسب الخزينة للتحصيل.<br>
+                                    • يتم ترحيل القيد وتحصيل المبلغ المطلوب.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مرحلة التحصيل</span>
+                                    <span class="flow-step-role">محاسب الخزينة (التحصيل)</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يتم تحديد طريقة السداد المتبعة من قِبل العميل، وتتفرع إلى مسارين بناءً على نوع
+                                    الدفع:<br>
+                                    • <strong>دفع نقدي:</strong> يتم عمل قيد نقدي للتحصيل من العميل، ويتبع ذلك إنشاء قيد
+                                    السداد للتحصيل من العميل نقدياً.<br>
+                                    • <strong>دفع بشيك:</strong> يتم عمل قيد شيك للتحصيل من العميل، ويتبع ذلك إنشاء قيد
+                                    السداد باختيار طريقة السداد شيك.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 6-أ من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 6-DIRECT: DIRECT CUSTOMER COLLECTION ================= -->
+        <section class="a4-page" id="page-6-direct">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: تحصيل العملاء المباشرين (Direct Customer Collection
+                    Management)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة تحصيل العملاء المباشرين (Direct Customer Collection Process Flow)</span>
+                        <span class="tb-badge">شكل تحصيل العملاء المباشرين</span>
+                    </div>
+                    <img src="direct_collection_chart.png" alt="Direct Customer Collection Chart" class="diagram-img"
+                        style="max-height: 700px; width: 100%; display: block; margin: 0 auto; object-fit: contain;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) تحصيل العملاء ضمن الإدارة المالية، والتي تتم بالتعاون بين ثلاثة
+                        أطراف رئيسية هي: العميل، محاسب العملاء (الإثبات)، ومحاسب الخزينة (التحصيل). إليك شرح خطوات هذه
+                        الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة تحصيل العملاء:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">العميل</span>
+                        <span class="role-badge r-2">محاسب العملاء (الإثبات)</span>
+                        <span class="role-badge r-3">محاسب الخزينة (التحصيل)</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وتواصل
+                                        العميل</span>
+                                    <span class="flow-step-role">العميل</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تبدأ الدورة عندما يتواصل العميل مع محاسب العملاء لتوريد المبالغ المستحقة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إثبات وترحيل
+                                        الفاتورة</span>
+                                    <span class="flow-step-role">محاسب العملاء - الإثبات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يقوم محاسب العملاء بترحيل فاتورة المبيعات من أمر البيع.<br>
+                                    • يتم إرسال فاتورة العميل إلى محاسب الخزينة للصرف.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">تحديد طريقة السداد</span>
+                                    <span class="flow-step-role">محاسب الخزينة - التحصيل</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يتم تحديد طريقة السداد المناسبة، وتتفرع إلى مسارين بناءً على نوع الدفع:<br>
+                                    • <strong>مسار الدفع النقدي:</strong> يتم عمل قيد نقدي للتحصيل من العميل. يتم إنشاء
+                                    قيد السداد للتحصيل من العميل نقدياً.<br>
+                                    • <strong>مسار الدفع بشيك:</strong> يتم عمل قيد شيك للتحصيل من العميل. يتم إنشاء قيد
+                                    السداد باختيار طريقة السداد شيك.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">الخطوات الختامية</span>
+                                    <span class="flow-step-role">محاسب العملاء - الإثبات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يتم تحصيل المبلغ المطلوب.<br>
+                                    • يتم ترحيل القيد في النظام المحاسبي لإنهاء الدورة.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 6-ب من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 7: FINANCIALS PART 4 ================= -->
+        <section class="a4-page" id="page-7">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: إدارة العُهد النقدية (Petty Cash Management)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة الخزينة – إستلام وتسوية العهد (Custody Process Flow)</span>
+                        <span class="tb-badge">شكل رقم (3)</span>
+                    </div>
+                    <img src="custody_chart.png" alt="Custody Chart" class="diagram-img"
+                        style="max-height: 420px; width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) الخزينة – إستلام وتسوية العهد ضمن الإدارة المالية، والتي يتم
+                        تنفيذها بالتعاون بين عدة جهات تشمل: موظف العمليات، محاسب الخزنة، الإدارة العليا، والإدارة
+                        المالية. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة إستلام وتسوية العهد:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">موظف العمليات</span>
+                        <span class="role-badge r-2">محاسب الخزنة</span>
+                        <span class="role-badge r-4">الإدارة العليا</span>
+                        <span class="role-badge r-3">الإدارة المالية</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وإنشاء طلب
+                                        الصرف</span>
+                                    <span class="flow-step-role">موظف العمليات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تبدأ الدورة من عند موظف العمليات بإنشاء طلب صرف.<br>
+                                    • يتم إرسال الطلب إلى محاسب الخزنة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة الطلب وإنشاء قيد
+                                        التسوية</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يقوم محاسب الخزنة بمراجعة الطلب وإنشاء قيد تسوية.<br>
+                                    • يتم إرسال الطلب إلى الإدارة العليا للمراجعة والموافقة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">المراجعة والموافقة</span>
+                                    <span class="flow-step-role">الإدارة العليا</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تقوم الإدارة العليا بمراجعة الطلب واتخاذ القرار:<br>
+                                    • <strong>في حالة "رفض":</strong> يعود الطلب لمسار المراجعة.<br>
+                                    • <strong>في حالة "موافق":</strong> يتم إرسال الموافقة إلى محاسب الخزنة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">صرف العهدة</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يقوم محاسب الخزنة بعمل سند قبض.<br>
+                                    • يتم صرف العهدة للموظف (موظف العمليات).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إستلام العهدة
+                                        والتسوية</span>
+                                    <span class="flow-step-role">موظف العمليات والإدارة المالية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يستلم موظف العمليات العهدة المحددة.<br>
+                                    • يقوم موظف العمليات بإرسال المستندات الخاصة بالتسوية وإثباتها في الإدارة
+                                    المالية.<br>
+                                    • تتولى الإدارة المالية استلام المستندات ومراجعتها، ثم إرسال الإعتماد إلى الخزنة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">التسوية النهائية</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يقوم محاسب الخزنة بعمل تسوية العهدة (سواء كانت له أو عليه) لإنهاء الدورة المحاسبية
+                                    للعهد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 7 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 8: FINANCIALS PART 5 ================= -->
+        <section class="a4-page" id="page-8">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: السلَف والمدفوعات المقدمة (Advances Management)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة طلب وصرف السلَف (Advances Process Flow)</span>
+                        <span class="tb-badge">شكل رقم (4)</span>
+                    </div>
+                    <img src="advances_chart.png" alt="Advances Chart" class="diagram-img"
+                        style="max-height: 420px; width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) صرف السلف ضمن الإدارة المالية، والتي يتم تنفيذها من خلال عدة أدوار
+                        تشمل: الموظف / العمليات، المدير المباشر، رئيس مجلس الإدارة، الموارد البشرية، الإدارة المالية،
+                        ومحاسب الخزنة. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة صرف السلف:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">الموظف / العمليات</span>
+                        <span class="role-badge r-2">المدير المباشر</span>
+                        <span class="role-badge r-4">رئيس مجلس الإدارة</span>
+                        <span class="role-badge r-3">الموارد البشرية</span>
+                        <span class="role-badge r-5">الإدارة المالية ومحاسب الخزنة</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وطلب السلفة</span>
+                                    <span class="flow-step-role">الموظف / العمليات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تبدأ الدورة بإنشاء طلب صرف سلفة من قِبل الموظف.<br>
+                                    • يتم إرسال الطلب إلى المدير المباشر.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة المدير
+                                        المباشر</span>
+                                    <span class="flow-step-role">المدير المباشر</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يستلم المدير المباشر الطلب ويقوم بمراجعته. ويتفرع المسار إلى حالتين:<br>
+                                    • <strong>حالة الرفض:</strong> يتم رفض الطلب مع إضافة سبب الرفض، ويعود للموظف
+                                    لمراجعة سبب الرفض؛ فإذا كان قابلاً للتعديل يقوم الموظف بتعديل الطلب وإعادة إرساله،
+                                    وإذا كان رفضاً تاماً يتم إغلاق الطلب.<br>
+                                    • <strong>حالة الموافقة:</strong> يتم تحويل الطلب للخطوة التالية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة رئيس مجلس
+                                        الإدارة</span>
+                                    <span class="flow-step-role">رئيس مجلس الإدارة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يستلم رئيس مجلس الإدارة الطلب الذي تم الموافقة عليه من المدير المباشر ويقوم
+                                    بمراجعته.<br>
+                                    • في حال الموافقة، يتم إرسال الطلب إلى قسم الموارد البشرية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة الموارد
+                                        البشرية</span>
+                                    <span class="flow-step-role">الموارد البشرية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يقوم قسم الموارد البشرية بمراجعة الطلب:<br>
+                                    • <strong>إذا كان مرفوضاً:</strong> يتم إرجاعه مع ذكر السبب.<br>
+                                    • <strong>إذا كان مقبولاً:</strong> يتم إرسال الطلب إلى الإدارة المالية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">المراجعة والموافقة في
+                                        الإدارة المالية</span>
+                                    <span class="flow-step-role">الإدارة المالية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تقوم الإدارة المالية بالمراجعة والموافقة، ويتفرع المسار بناءً على طريقة الصرف أو
+                                    السداد:<br>
+                                    • <strong>رفض مع السبب:</strong> يُعاد الطلب في حال وجود سبب للرفض.<br>
+                                    • <strong>موافقة تحويل:</strong> يتم تحويل بنكي إذا كان للموظف حساب وإثبات
+                                    القيد.<br>
+                                    • <strong>صرف نقدي:</strong> يتم الانتقال إلى محاسب الخزنة لصرف المبلغ نقدياً.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">الصرف النهائي</span>
+                                    <span class="flow-step-role">محاسب الخزنة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يقوم محاسب الخزنة بصرف المبلغ المطلوب للموظف.<br>
+                                    • يتم إثبات قيد الصرف.<br>
+                                    • تصل الدورة إلى النهاية.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 8 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 9: FINANCIALS PART 6 ================= -->
+        <section class="a4-page" id="page-9">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الإدارة المالية: مدفوعات الموردين واعتمادات الصرف</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة سداد الموردين (Vendor Payments Flow)</span>
+                        <span class="tb-badge">شكل رقم (5)</span>
+                    </div>
+                    <img src="vendor_payments_chart.png" alt="Vendor Payments Chart" class="diagram-img"
+                        style="max-height: 420px; width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) سداد الموردين ضمن الإدارة المالية، والتي تتم بالتعاون بين طرفين
+                        أساسيين هما: المورد ومحاسب الخزينة. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة سداد الموردين:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">المورد</span>
+                        <span class="role-badge r-2">محاسب الخزينة</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وتواصل
+                                        المورد</span>
+                                    <span class="flow-step-role">المورد</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تبدأ الدورة عندما يتواصل المورد مع الإدارة المالية لطلب مستحقاته.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة فاتورة
+                                        المشتريات</span>
+                                    <span class="flow-step-role">محاسب الخزينة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يستلم محاسب الخزينة الطلب ويقوم بمراجعة فاتورة المشتريات المرحلة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">تحديد طريقة السداد</span>
+                                    <span class="flow-step-role">محاسب الخزينة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يتم تحديد طريقة السداد المناسبة، وتتفرع إلى مسارين رئيسيين بناءً على نوع الدفع:<br>
+                                    • <strong>مسار الدفع النقدي:</strong> يتم عمل قيد نقدي للدفع للموردين. يتم إنشاء قيد
+                                    السداد للدفع للموردين.<br>
+                                    • <strong>مسار الدفع بشيك:</strong> يتم عمل قيد شيك للدفع للموردين. يتم إنشاء قيد
+                                    السداد باختيار طريقة السداد شيك.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">الخطوات الختامية</span>
+                                    <span class="flow-step-role">محاسب الخزينة والمورد</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يتم الانتقال إلى ترحيل القيد.<br>
+                                    • يتم دفع المبلغ المطلوب للمورد.<br>
+                                    • تصل الدورة إلى النهاية بعد استلام المورد لمستحقاته.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 9 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 10: PROCUREMENT MANAGEMENT ================= -->
+        <section class="a4-page" id="page-10">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">إدارة المشتريات (Procurement Management)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة المشتريات (Procurement Process Flow)</span>
+                        <span class="tb-badge">شكل رقم (6)</span>
+                    </div>
+                    <img src="procurement_chart.png" alt="Procurement Chart" class="diagram-img"
+                        style="max-height: 800px; width: 100%; display: block; margin: 0 auto; object-fit: contain;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) المشتريات ضمن النظام الإداري والمالي، والتي تتم بمشاركة عدة إدارات
+                        وجهات تشمل: موظفي الإدارات، مدير الإدارة، المخازن، المشتريات، المورد، الإدارات المعنية، الإدارة
+                        العليا، والمالية. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة المشتريات:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">موظفي الإدارات ومدير الإدارة</span>
+                        <span class="role-badge r-2">المخازن</span>
+                        <span class="role-badge r-3">المشتريات والمورد</span>
+                        <span class="role-badge r-4">الإدارات المعنية والإدارة العليا</span>
+                        <span class="role-badge r-5">المالية</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إنشاء طلب الاحتياجات</span>
+                                    <span class="flow-step-role">موظفي الإدارات ومدير الإدارة</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تبدأ الدورة عندما يقوم موظفو الإدارات بـ "إنشاء طلب الاحتياجات".<br>
+                                    • يتم إرسال الطلب إلى مدير الإدارة لمراجعته.<br>
+                                    • يقوم مدير الإدارة بمراجعة الطلب؛ فإما أن يتم رفضه (مع إضافة سبب الرفض ليصبح طلب
+                                    احتياج مرفوض)، أو الموافقة عليه.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">فحص الكميات</span>
+                                    <span class="flow-step-role">المخازن</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    بعد موافقة مدير الإدارة، ينتقل الطلب إلى المخازن لفحص الكميات الموجودة.<br>
+                                    • <strong>إذا وُجد الصنف في المخزن:</strong> يتم رفض الطلب مع إضافة الكميات المتاحة
+                                    أو التنويه بوجود الصنف في المخزن.<br>
+                                    • <strong>إذا لم يكن موجوداً:</strong> يُعتبر الطلب "طلب احتياجات" جديداً للمشتريات.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إجراءات الشراء وعروض
+                                        الأسعار</span>
+                                    <span class="flow-step-role">المشتريات والمورد</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تتم الموافقة على طلب الاحتياجات من قبل المشتريات، ثم يتم "إرسال طلب عروض أسعار
+                                    للموردين".<br>
+                                    • يتلقى المورد الطلب ويقوم بعمل "طلب عرض السعر" وإرسال عروض الأسعار.<br>
+                                    • تقوم المشتريات بمقارنة عروض الأسعار واختيار الأنسب، وإدراج المورد المختار.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">المراجعة والموافقات</span>
+                                    <span class="flow-step-role">الإدارات المعنية والإدارة العليا</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يتم تحويل الطلب إلى أمر توريد مفتوح مع إرفاق المستندات الخاصة بالطلب وعروض الأسعار
+                                    الأخرى، وإرسال "طلب الموافقات".<br>
+                                    • تقوم الإدارات المعنية بمراجعة المواصفات وعروض الأسعار الأخرى؛ فإما أن يتم الرفض
+                                    (مع التعليق بسبب الرفض)، أو الموافقة.<br>
+                                    • بعد ذلك، يتم رفع الطلب إلى الإدارة العليا لمراجعة أمر التوريد، فإما أن يتم الرفض
+                                    أو الموافقة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إصدار أمر التوريد
+                                        والاستلام</span>
+                                    <span class="flow-step-role">المشتريات والمخازن</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    بعد الحصول على الموافقات النهائية، يصبح "أمر توريد مقبول".<br>
+                                    • يتم "إنشاء إذن استلام المخزن".<br>
+                                    • عند وصول البضائع للمخازن، يتم فحص الكميات وتمريرها عبر 3 حالات:<br>
+                                    &nbsp;&nbsp;- <strong>مرفوض كلي:</strong> يتم عدم استلام وإغلاق إذن الاستلام.<br>
+                                    &nbsp;&nbsp;- <strong>مقبول جزئي:</strong> يتم إدخال الكميات المقبولة للاستلام.<br>
+                                    &nbsp;&nbsp;- <strong>مقبول:</strong> يتم ترحيل استلام الكميات المقبولة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">المرحلة المالية
+                                        والنهاية</span>
+                                    <span class="flow-step-role">المالية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يتم مراجعة الكميات المستلمة وترحيل الفاتورة في قسم المالية.<br>
+                                    • يصل إذن الاستلام إلى مرحلته النهائية، وتصل الدورة إلى النهاية.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 10 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 11: INVENTORY MANAGEMENT PART 1 ================= -->
+        <section class="a4-page" id="page-11">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">إدارة المخازن والمستودعات (Inventory Management)</h2>
+
+                <div class="inventory-intro-box">
+                    <p>
+                        تعتمد الشركة الأفريقية للأمن والحراسة (Africa Company) على نظام تتبع مخزني دقيق للمهمات الأمنية،
+                        الزي الرسمي، أدوات الحراسة، والأجهزة اللاسلكية. يوفر موديول إدارة المخازن في D365 Business
+                        Central تحكماً كاملاً في حركة الأصناف وتكلفتها عبر مختلف الإدارات والمواقع التشغيلية.
+                    </p>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 11 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 12: INVENTORY MANAGEMENT PART 2 ================= -->
+        <section class="a4-page" id="page-12">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">إدارة المخازن: استقالة وإرجاع عهدة المخازن (Inventory Resignation)</h2>
+
+                <div class="diagram-card">
+                    <div class="diagram-card-title">
+                        <span>مخطط دورة استقالة وإرجاع عهدة المهمات والمعدات المخزنية (Inventory Resignation
+                            Flow)</span>
+                        <span class="tb-badge">شكل رقم (7)</span>
+                    </div>
+                    <img src="inventory_resignation_chart.png" alt="Inventory Resignation Chart" class="diagram-img">
+                </div>
+
+                <div class="process-flow-container">
+                    <div class="process-flow-title">
+                        <span>إجراءات إرجاع عهد المهمات وإخلاء الطرف</span>
+                    </div>
+
+                    <div class="roles-bar">
+                        <span class="role-badge r-1">الموظف المستقيل</span>
+                        <span class="role-badge r-2">أمين المخزن</span>
+                        <span class="role-badge r-3">مسؤول الجودة والكهرباء</span>
+                        <span class="role-badge r-4">محاسب المخازن</span>
+                    </div>
+
+                    <div class="flow-steps-grid">
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">تقديم إشعار الاستقالة وإخلاء الطرف</span>
+                                    <span class="flow-step-role">الموظف</span>
+                                </div>
+                                <p class="flow-step-desc">بدء إجراءات إخلاء الطرف عبر النظام واستخراج قائمة العُهد
+                                    المخزنية المسجلة برقم السيريال أو الكود.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">فحص المهمات المسترجعة وتقييم الحالة</span>
+                                    <span class="flow-step-role">أمين المخزن واللجنة</span>
+                                </div>
+                                <p class="flow-step-desc">فحص الأجهزة اللاسلكية والزي والأدوات المرجعة وتصنيفها (صالح
+                                    للاستخدام / تالف بسبب سوء الاستخدام).</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">إصدار إذن ارتجاع عهدة (Item Return Receipt)</span>
+                                    <span class="flow-step-role">محاسب المخازن</span>
+                                </div>
+                                <p class="flow-step-desc">إدخال المهمات الصالحة للمخزن مرة أخرى، وتحميل قيمة التوالف
+                                    الناتجة عن التقصير على مستحقات نهايات الخدمة.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">إقفال كارت العهدة وإصدار التصفية</span>
+                                    <span class="flow-step-role">إدارة الموارد البشرية</span>
+                                </div>
+                                <p class="flow-step-desc">اعتماد تصفية العُهدة تماماً من D365 والسماح بصرف مستحقات نهاية
+                                    الخدمة النهائية للموظف.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 12 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 13: SALES MANAGEMENT PART 1 ================= -->
+        <section class="a4-page" id="page-13">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">التسويق (Marketing)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة تقديم عروض الأسعار وأوامر البيع (Sales Offer Process Flow)</span>
+                        <span class="tb-badge">شكل رقم (8)</span>
+                    </div>
+                    <img src="sales_offer_chart.png" alt="Sales Offer Chart" class="diagram-img"
+                        style="max-height: 700px; width: 100%; display: block; margin: 0 auto; object-fit: contain;">
+                    <div
+                        style="margin-top: 0.4rem; padding: 0.4rem 0.75rem; background-color: #fef3c7; border-right: 4px solid #f59e0b; border-radius: 4px; font-size: 0.8rem; color: #92400e; text-align: right;">
+                        <strong>💡 ملحوظة هامة:</strong> جميع الإدارات تعمل بالتوازي على المشروع في نفس الوقت.
+                    </div>
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) التسويق (وتتعلق بطلب تقديم خدمة تأمين أو تسعير مشروع)، والتي تتم
+                        بالتعاون بين عدة أقسام وجهات تشمل: العميل، التسويق، العمليات، الموارد البشرية، الشؤون الإدارية،
+                        والمالية. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة التسويق:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">العميل</span>
+                        <span class="role-badge r-2">التسويق</span>
+                        <span class="role-badge r-3">العمليات</span>
+                        <span class="role-badge r-4">الموارد البشرية</span>
+                        <span class="role-badge r-5">الشؤون الإدارية</span>
+                        <span class="role-badge r-6">المالية</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وطلب التأمين</span>
+                                    <span class="flow-step-role">العميل والتسويق</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تبدأ الدورة من عند العميل بإرسال طلب تأمين.<br>
+                                    • يتلقى قسم التسويق طلب التأمين.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">إنشاء المشروع وتحديد
+                                        المعاينة والعرض الفني</span>
+                                    <span class="flow-step-role">التسويق والعمليات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يقوم التسويق بإنشاء مشروع جديد وتحديد العميل. يتم تحديد المهمة الأولى وهي
+                                    "المعاينة". يتم إرسال إخطار إلى الإدارات مرفق به رقم المشروع.<br>
+                                    • <strong>وفي نفس الوقت، يقوم قسم العمليات بـ:</strong><br>
+                                    &nbsp;&nbsp;- إنشاء العرض الفني.<br>
+                                    &nbsp;&nbsp;- إرفاق العرض الفني على المشروع.<br>
+                                    &nbsp;&nbsp;- تسجيل عدد الأفراد المطلوبة من كل مسمى وظيفي والأدوات المطلوبة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">تحديد الرواتب وتكاليف
+                                        الموارد</span>
+                                    <span class="flow-step-role">الموارد البشرية والشؤون الإدارية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    ينتقل الطلب إلى الموارد البشرية لتحديد الراتب لكل فرد على أساس الوظيفة وموقع
+                                    المشروع، ثم إرفاق تقرير الراتب لوظائف المشروع.<br>
+                                    • <strong>ينتقل الطلب بعد ذلك إلى الشؤون الإدارية للقيام بـ:</strong><br>
+                                    &nbsp;&nbsp;- تسعير المعدات المطلوبة لتأدية الخدمة.<br>
+                                    &nbsp;&nbsp;- إرفاق تقرير التسعير.<br>
+                                    &nbsp;&nbsp;- إنشاء أمر مشتريات من المشروع.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة التكاليف والتسعير
+                                        النهائي</span>
+                                    <span class="flow-step-role">المالية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تقوم المالية بمراجعة كل تكاليف المشروع والعمل عليها.<br>
+                                    • يتم تحديد السعر للخدمة على المشروع بعد وضع هامش ربح مناسب.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">عرض السعر والنهاية</span>
+                                    <span class="flow-step-role">التسويق والعميل</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يتم إرسال العرض إلى العميل.<br>
+                                    • يمرر قسم التسويق عرض سعر الخدمة إلى العميل مع إمكانية "التفاوض مع العميل".<br>
+                                    • يصل العميل إلى خطوة عرض سعر الخدمة لتصل الدورة إلى النهاية.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 13 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 14: SALES MANAGEMENT PART 2 ================= -->
+        <section class="a4-page" id="page-14">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">إدارة المبيعات: خطوات دورة المبيعات الـ 7 التفصيلية</h2>
+
+                <p>
+                    تتكون دورة المبيعات في نظام Microsoft Dynamics 365 Business Central للشركة الأفريقية للأمن والحراسة
+                    من سبع مراحل رئيسية منظمة تضمن الدقة التامة والربط المحاسبي التلقائي:
+                </p>
+
+                <div class="process-flow-container">
+                    <div class="process-flow-title">
+                        <span>الخطوات التشغيلية الـ 7 لدورة المبيعات والفوترة</span>
+                    </div>
+
+                    <div class="flow-steps-grid">
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">إعداد تقديم عرض السعر (Sales Quote Creation)</span>
+                                    <span class="flow-step-role">مسؤول المبيعات</span>
+                                </div>
+                                <p class="flow-step-desc">تحديد الخدمات الأمنية أو المنتجات المطلوبة، أسعار الخدمات،
+                                    فترات التعاقد، وتوليد عرض السعر من D365 وإرساله للعميل.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">مراجعة واعتماد عرض السعر (Quote Approval)</span>
+                                    <span class="flow-step-role">مدير المبيعات</span>
+                                </div>
+                                <p class="flow-step-desc">مراجعة الشروط التجارية ونسب الخصم والحد الائتماني للعميل،
+                                    واكتساب موافقة العميل الرسمية والتوقيع.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">تحويل عرض السعر إلى أمر بيع (Make Sales Order)</span>
+                                    <span class="flow-step-role">منسق العمليات</span>
+                                </div>
+                                <p class="flow-step-desc">تحويل عرض المقبول تلقائياً إلى أمر بيع ملزم (Sales Order) وحجز
+                                    المهمات أو القوى البشرية في النظام.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">تأكيد حجز التجهيزات والخدمات (Inventory
+                                        Allocation)</span>
+                                    <span class="flow-step-role">أمين المخزن / العمليات</span>
+                                </div>
+                                <p class="flow-step-desc">تخصيص المعدات والزي الرسمي المطلوب لتأفيذ العقد الأمني وتأكيد
+                                    جاهزية الموقع التسليم.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">إصدار إذن الشحن / تقديم الخدمة (Sales Shipment)</span>
+                                    <span class="flow-step-role">مسؤول التنسيق</span>
+                                </div>
+                                <p class="flow-step-desc">ترحيل عملية الشحن وتخفيض المخزون وإثبات تكلفة البضاعة المباعة
+                                    (COGS) في الحسابات العامة تلقائياً.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">إصدار فاتورة البيع الرسمية (Posted Sales
+                                        Invoice)</span>
+                                    <span class="flow-step-role">محاسب المبيعات</span>
+                                </div>
+                                <p class="flow-step-desc">توليد الفاتورة الضريبية وتوجيه الإيراد لحساب إيراد المبيعات
+                                    (Sales Revenue) وإثبات المديونية على العميل.</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-num">7</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title">تحصيل الدفعة وإغلاق المستحق (Payment Ledger
+                                        Entry)</span>
+                                    <span class="flow-step-role">محاسب الخزينة</span>
+                                </div>
+                                <p class="flow-step-desc">استلام الدفعة النقدية أو البنكية وتسويتها مقابل الفاتورة
+                                    لإغلاق حساب العميل وتحديث تقرير إعمار الديون.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 14 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 14b / 15: SALES ORDER PROCESS FLOW ================= -->
+        <section class="a4-page" id="page-14b">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">مخطط دورة أمر المبيعات (Sales Order Process Flow)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة أمر المبيعات (Sales Order Process Flow)</span>
+                        <span class="tb-badge">أمر المبيعات</span>
+                    </div>
+                    <img src="sales_order_chart.png" alt="Sales Order Chart" class="diagram-img"
+                        style="max-height: 700px; width: 100%; display: block; margin: 0 auto; object-fit: contain;">
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة أمر المبيعات:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">العميل</span>
+                        <span class="role-badge r-2">التسويق</span>
+                        <span class="role-badge r-3">الإدارة القانونية</span>
+                        <span class="role-badge r-4">حسابات العملاء</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">استلام عرض السعر
+                                        والتحقق</span>
+                                    <span class="flow-step-role">العميل</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    تبدأ الدورة باستلام العميل لعرض السعر. يقوم العميل بالتحقق من عرض السعر، وتتفرع
+                                    المسارات هنا إلى ثلاثة خيارات:<br>
+                                    • <strong>مقبول:</strong> يتم إرسال الموافقة إلى الإدارة القانونية لإنشاء العقد.<br>
+                                    • <strong>مرفوض قابل للتفاوض:</strong> يتولى قسم التسويق التفاوض مع العميل للوصول
+                                    إلى حل، ثم يعود الطلب لمرحلة التحقق من السعر مجدداً.<br>
+                                    • <strong>رفض قاطع:</strong> يتم إغلاق وأرشفة الطلب نهائياً.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">التعاقد وإنشاء العقد</span>
+                                    <span class="flow-step-role">الإدارة القانونية والتسويق</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • بعد موافقة العميل على السعر، تقوم الإدارة القانونية بإنشاء العقد مع تحديد تاريخ
+                                    السريان.<br>
+                                    • يتم توقيع العقد رسمياً.<br>
+                                    • يقوم قسم التسويق باستلام العقد بعد توقيعه.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">العمل على المشروع وبدء
+                                        التشغيل</span>
+                                    <span class="flow-step-role">التسويق</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • بعد استلام العقد موقعاً، يقوم التسويق بـ "العمل على المشروع وتحديد تاريخ البدء"
+                                    (وهذه إحدى الخطوات التي تم تعديلها لتوضيح جدولة المشروع بدقة).<br>
+                                    • يتم بعد ذلك "إخطار الإدارات لبدء التشغيل" الفعلي للمشروع.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">المرحلة المحاسبية
+                                        والنهاية</span>
+                                    <span class="flow-step-role">حسابات العملاء</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يتجه الطلب إلى قسم حسابات العملاء لترحيل تنفيذ الخدمة الشهرية.<br>
+                                    • تتم مراجعة بيانات العميل لمعرفة ما إذا كان (عميلاً مباشراً أم غير مباشر).<br>
+                                    • يتم الانتقال إلى دورة التحصيلات، لتصل الدورة في النهاية إلى النهاية.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 15 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 15: FIXED ASSETS SETUP & OPERATIONS ================= -->
+        <section class="a4-page" id="page-15">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">الأصول الثابتة (Fixed Assets)</h2>
+
+                <div class="company-profile-box"
+                    style="margin-bottom: 0.6rem; padding: 0.6rem 0.9rem; background: #f8fafc; border-right: 4px solid #0284c7; border-radius: 6px;">
+                    <h3 style="font-size: 0.9rem; font-weight: bold; color: #0f172a; margin-bottom: 0.35rem;">🔄 دورة
+                        حياة الأصول الثابتة (Fixed Assets Lifecycle Overview)</h3>
+                    <p style="font-size: 0.8rem; line-height: 1.5; color: #334155; margin-bottom: 0;">
+                        تبدأ الدورة في الشركة الأفريقية بإنشاء بطاقة الأصل وإدخال بياناته وتصنيفه. ثم تنتقل إلى إثبات
+                        الاستحواذ، حيث يتم تسجيل قيمة الأصل وتاريخ امتلاكه لتبدأ بعد ذلك دورة الإهلاك التلقائي بناءً على
+                        العمر الإنتاجي المحدد في "كتاب الإهلاك". خلال حياة الأصل، قد يمر بدورة صيانة (يتوقف فيها عن
+                        العمل مؤقتاً) أو إعادة تقدير لزيادة قيمته. تنتهي الدورة باستبعاد الأصل، إما عن طريق بيعه للغير
+                        عبر فاتورة مبيعات أو بإسقاطه من الدفاتر.
+                    </p>
+                </div>
+
+                <!-- 1. Card Creation & Tab Setup -->
+                <div class="process-flow-container"
+                    style="padding: 0.6rem 0.85rem; margin: 0.5rem 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;">
+                    <div class="process-flow-title"
+                        style="margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: bold; color: #0f172a;">
+                        <span>📌 إنشاء وإعداد بطاقة الأصول الثابتة (Fixed Assets Card Creation)</span>
+                    </div>
+                    <p style="font-size: 0.78rem; color: #475569; margin-bottom: 0.4rem;">
+                        من مربع البحث، ابحث عن <strong>الأصول الثابتة</strong>، ثم اضغط على <strong>جديد (New)</strong>
+                        لفتح بطاقة الأصول المكونة من الأقسام التالية:
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                        <div
+                            style="background: #f1f5f9; padding: 0.5rem 0.75rem; border-radius: 5px; border-right: 3px solid #2563eb;">
+                            <strong style="font-size: 0.8rem; color: #1e3a8a;">1. الصفحة العامة (General Tab):</strong>
+                            <p style="font-size: 0.75rem; color: #334155; margin: 0.2rem 0 0 0;">أدخل البيانات المتاحة
+                                للأصول الجديدة في الصفحة العامة:</p>
+                            <ul
+                                style="font-size: 0.75rem; color: #334155; margin: 0.25rem 0 0 1rem; padding-right: 0.75rem; line-height: 1.45;">
+                                <li><strong>رقم (No.):</strong> يحدد رقم القيد أو السجل المعني، وفقًا لسلسلة الأرقام
+                                    المحددة.</li>
+                                <li><strong>الوصف (Description):</strong> يحدد وصفًا للأصل الثابت.</li>
+                                <li><strong>رمز الفئة (Class Code):</strong> يحدد الفئة التي ينتمي إليها الأصل الثابت.
+                                </li>
+                                <li><strong>رمز الفئة الفرعية (Subclass Code):</strong> يحدد الفئة الفرعية للفئة التي
+                                    ينتمي إليها الأصل الثابت.</li>
+                                <li><strong>الرقم التسلسلي (Serial No.):</strong> يحدد الرقم التسلسلي للأصل الثابت.</li>
+                                <li><strong>وصف البحث (Search Description):</strong> يحدد وصف البحث للأصل الثابت.</li>
+                                <li><strong>الموظف المسؤول (Responsible Employee):</strong> يحدد الموظف المسؤول عن الأصل
+                                    الثابت.</li>
+                                <li><strong>غير نشط (Inactive):</strong> يحدد أن الأصل الثابت غير نشط (على سبيل المثال،
+                                    إذا لم يكن الأصل في الخدمة أو قديمًا).</li>
+                                <li><strong>محظور (Blocked):</strong> يحدد أن السجل المرتبط محظور من الترحيل في
+                                    المعاملات، على سبيل المثال العميل الذي تم إعلان إعساره أو العنصر الذي تم وضعه في
+                                    الحجر الصحي.</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            style="background: #f1f5f9; padding: 0.5rem 0.75rem; border-radius: 5px; border-right: 3px solid #059669;">
+                            <strong style="font-size: 0.8rem; color: #065f46;">2. كتاب الإهلاك (Depreciation Book
+                                Tab):</strong>
+                            <p style="font-size: 0.75rem; color: #334155; margin: 0.2rem 0 0 0;">هذا الجزء مخصص لحساب
+                                الإهلاك، أدخل:</p>
+                            <ul
+                                style="font-size: 0.75rem; color: #334155; margin: 0.25rem 0 0 1rem; padding-right: 0.75rem; line-height: 1.45;">
+                                <li><strong>أسلوب الإهلاك (Depreciation Method):</strong> يحدد كيفية حساب الإهلاك لدفتر
+                                    الإهلاك.</li>
+                                <li><strong>تاريخ بدء الإهلاك (Depreciation Starting Date):</strong> يحدد التاريخ الذي
+                                    يبدأ فيه إهلاك الأصل الثابت.</li>
+                                <li><strong>عدد سنوات الإهلاك (No. of Depreciation Years):</strong> يحدد طول فترة
+                                    الإهلاك، معبرًا عنها بالسنوات.</li>
+                                <li><strong>تاريخ انتهاء الإهلاك (Depreciation Ending Date):</strong> يحدد التاريخ الذي
+                                    ينتهي فيه إهلاك الأصل الثابت.</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            style="background: #f1f5f9; padding: 0.5rem 0.75rem; border-radius: 5px; border-right: 3px solid #d97706;">
+                            <strong style="font-size: 0.8rem; color: #92400e;">3. قسم الصيانة (Maintenance
+                                Tab):</strong>
+                            <p style="font-size: 0.75rem; color: #334155; margin: 0.2rem 0 0 0;">في هذا الجزء أدخل:</p>
+                            <ul
+                                style="font-size: 0.75rem; color: #334155; margin: 0.25rem 0 0 1rem; padding-right: 0.75rem; line-height: 1.45;">
+                                <li><strong>رقم مورد الأصل (Vendor No.):</strong> يحدد رقم البائع الذي اشتريت منه هذا
+                                    الأصل الثابت.</li>
+                                <li><strong>رقم منفذ خدمة الصيانة (Maintenance Vendor No.):</strong> يحدد رقم البائع
+                                    الذي يقوم بإجراء الإصلاحات والصيانة على الأصل الثابت.</li>
+                                <li><strong>ضمن الصيانة (Under Maintenance):</strong> يحدد ما إذا كان الأصل الثابت قيد
+                                    الإصلاح حالياً.</li>
+                                <li><strong>تاريخ الخدمة التالي (Next Service Date):</strong> يحدد تاريخ الخدمة المجدولة
+                                    التالي للأصل الثابت. يتم استخدام هذا كعامل تصفية في تقرير الصيانة - الخدمة التالية.
+                                </li>
+                                <li><strong>تاريخ الضمان (Warranty Date):</strong> يحدد تاريخ انتهاء الضمان للأصل
+                                    الثابت.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. GL Posting & Acquisition -->
+                <div class="process-flow-container"
+                    style="padding: 0.6rem 0.85rem; margin: 0.5rem 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;">
+                    <div class="process-flow-title"
+                        style="margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: bold; color: #0f172a;">
+                        <span>🏛️ الأصول الثابتة – دفتر الأستاذ العام وتثبيت الاستحواذ (FA General Ledger)</span>
+                    </div>
+                    <p style="font-size: 0.78rem; color: #475569; margin-bottom: 0.35rem;">
+                        تعتبر دفاتر الأصول الثابتة إحدى أدوات تسجيل القيمة التاريخية للأصول.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.35rem;">
+                        <div
+                            style="background: #eff6ff; padding: 0.45rem 0.65rem; border-radius: 5px; border: 1px solid #bfdbfe;">
+                            <strong style="font-size: 0.78rem; color: #1e40af;">طريقة إثبات قيمة استحواذ الأصل (Acquire
+                                Method):</strong>
+                            <ul
+                                style="font-size: 0.73rem; color: #1e3a8a; margin: 0.25rem 0 0 0; padding-right: 0.7rem; line-height: 1.4;">
+                                <li>بمجرد إدخال تاريخ بدء الإهلاك وعدد سنين الإهلاك يظهر إشعار من البرنامج بإثبات
+                                    القيمة، ومحتواها: <em>"هل جاهز لإثبات امتلاك الأصل الثابت؟"</em></li>
+                                <li>بمجرد الضغط على <strong>(Acquire)</strong> تفتح نافذة إدخال القيمة وتاريخ الامتلاك.
+                                </li>
+                                <li>ثم تحديد رقم حساب الاستحواذ.</li>
+                                <li>ثم الضغط على <strong>(Finish)</strong> لإثبات عملية الاستحواذ.</li>
+                                <li>يتم إنشاء وتوليد القيد المحاسبي الخاص بالاستحواذ تلقائياً.</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            style="background: #f0fdf4; padding: 0.45rem 0.65rem; border-radius: 5px; border: 1px solid #bbf7d0;">
+                            <strong style="font-size: 0.78rem; color: #166534;">طريقة تسجيل أخرى (دفاتر الأصول الثابتة
+                                FA Journal):</strong>
+                            <p style="font-size: 0.72rem; color: #14532d; margin: 0.15rem 0;">لتسجيل الأصول المملوكة
+                                للشركة وتعديل الأصول المشتراة عبر دفاتر FA Journal:</p>
+                            <ul
+                                style="font-size: 0.73rem; color: #14532d; margin: 0.15rem 0 0 0; padding-right: 0.7rem; line-height: 1.4;">
+                                <li><strong>تاريخ الترحيل (Posting Date):</strong> تاريخ ترحيل تلقائي للبند.</li>
+                                <li><strong>نوع المستند (Document Type):</strong> نوع المستند (مثال: فاتورة).</li>
+                                <li><strong>رقم الوثيقة (Document No.):</strong> رقم الفاتورة.</li>
+                                <li><strong>نوع الحساب (Account Type):</strong> الأصول الثابتة.</li>
+                                <li><strong>رقم الحساب (Account No.):</strong> حساب الأصل من شجرة الحسابات.</li>
+                                <li><strong>نوع ترحيل الأصل (FA Posting Type):</strong> اختيار "تكلفة الاستحواذ".</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Depreciation, Maintenance, Appreciation & Disposal -->
+                <div class="process-flow-container"
+                    style="padding: 0.6rem 0.85rem; margin: 0.5rem 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;">
+                    <div class="process-flow-title"
+                        style="margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: bold; color: #0f172a;">
+                        <span>⚙️ العمليات التشغيلية: الإهلاك، الصيانة، إعادة التقدير، والاستبعاد</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">
+                        <div
+                            style="background: #faf5ff; padding: 0.45rem 0.65rem; border-radius: 5px; border: 1px solid #e9d5ff;">
+                            <strong style="font-size: 0.78rem; color: #6b21a8;">📉 إهلاك الأصول الثابتة
+                                (Depreciation):</strong>
+                            <p style="font-size: 0.72rem; color: #581c87; margin: 0.15rem 0;">احتساب الإهلاك يكون
+                                أوتوماتيكياً بناءً على إعدادات الأصل ولكن لا تنفذ بدون أمر:</p>
+                            <ol
+                                style="font-size: 0.72rem; color: #581c87; margin: 0.15rem 0 0 0; padding-right: 0.7rem; line-height: 1.4;">
+                                <li>الدخول إلى قائمة الأصول الثابتة.</li>
+                                <li>من القائمة السريعة نختار <strong>احتساب الإهلاك (Calculate Depreciation)</strong>.
+                                </li>
+                                <li>يتم إنشاء دفتر الإهلاك وسؤال النظام: <em>"هل تريد فتح دفتر الإهلاك؟"</em></li>
+                                <li>عند الضغط على "نعم"، يتم فتح دفتر الإهلاك لكل الأصول العاملة.</li>
+                                <li>مراجعة قيم الإهلاك وعمل ترحيل لها.</li>
+                            </ol>
+                        </div>
+
+                        <div
+                            style="background: #fff7ed; padding: 0.45rem 0.65rem; border-radius: 5px; border: 1px solid #fed7aa;">
+                            <strong style="font-size: 0.78rem; color: #c2410c;">🛠️ صيانة الأصول الثابتة
+                                (Maintenance):</strong>
+                            <p style="font-size: 0.72rem; color: #9a3412; margin: 0.15rem 0 0 0;"><strong>أولاً: خروج
+                                    الأصل للصيانة:</strong> فتح قائمة الأصول، اختيار كارت الأصل، وتنشيط زر "غير نشط".
+                            </p>
+                            <p style="font-size: 0.72rem; color: #9a3412; margin: 0.2rem 0 0 0;"><strong>ثانياً: تسجيل
+                                    قيمة الصيانة:</strong> الدخول لدفتر (FA Journal)، اختيار الأصل، اختيار نوع الترحيل
+                                صيانة (Maintenance)، إدخال القيمة وعمل ترحيل.</p>
+                        </div>
+
+                        <div
+                            style="background: #f0fdf4; padding: 0.45rem 0.65rem; border-radius: 5px; border: 1px solid #bbf7d0;">
+                            <strong style="font-size: 0.78rem; color: #15803d;">📈 إعادة تقدير الأصول
+                                (Appreciation):</strong>
+                            <ul
+                                style="font-size: 0.72rem; color: #166534; margin: 0.15rem 0 0 0; padding-right: 0.7rem; line-height: 1.4;">
+                                <li>الدخول إلى دفتر تسجيل الأصول الثابتة (FA Journal).</li>
+                                <li>اختيار الأصل وتحديد نوع الترحيل تقدير (Appreciation).</li>
+                                <li>إدخال قيمة التقدير الجديدة وعمل ترحيل.</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            style="background: #fef2f2; padding: 0.45rem 0.65rem; border-radius: 5px; border: 1px solid #fecaca;">
+                            <strong style="font-size: 0.78rem; color: #b91c1c;">🚫 استبعاد الأصول (Disposal):</strong>
+                            <p style="font-size: 0.72rem; color: #991b1b; margin: 0.15rem 0 0 0;"><strong>أ. بالبيع
+                                    (Sales Invoice):</strong> البحث عن فاتورة المبيعات، إدخال العميل، اختيار نوع المنتج
+                                (أصول ثابتة)، إدخال قيمة البيع، وترحيل الفاتورة ليعالج البرنامج القيود تلقائياً.</p>
+                            <p style="font-size: 0.72rem; color: #991b1b; margin: 0.2rem 0 0 0;"><strong>ب. بدفتر الأصول
+                                    (FA Journal):</strong> الدخول لدفتر الأصول، اختيار الأصل ونوع الترحيل استبعاد
+                                (Disposal)، إدخال القيمة وترحيلها.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 16 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 15b / 17: FIXED ASSETS PROCUREMENT FLOW ================= -->
+        <section class="a4-page" id="page-15b">
+            <header class="page-header">
+                <div class="page-header-logos">
+                    <img src="abc_logo.png" alt="ABC Counsel" class="logo-abc">
+                    <img src="africa_logo.png" alt="Africa Company" class="logo-africa">
+                </div>
+                <div class="doc-meta">
+                    <strong>D365 BC Solution Design</strong>
+                    <span>Africa Company</span>
+                </div>
+            </header>
+
+            <main class="page-content">
+                <h2 class="section-title">مخطط دورة مشتريات الأصول الثابتة (Fixed Assets Procurement Flow)</h2>
+
+                <div class="diagram-card" style="padding: 0.4rem; margin: 0.4rem 0;">
+                    <div class="diagram-card-title" style="margin-bottom: 0.3rem;">
+                        <span>مخطط دورة مشتريات الأصول الثابتة (Fixed Assets Procurement Flow)</span>
+                        <span class="tb-badge">قطاع الأصول الثابتة</span>
+                    </div>
+                    <img src="fixed_assets_chart.png" alt="Fixed Assets Chart" class="diagram-img"
+                        style="max-height: 700px; width: 100%; display: block; margin: 0 auto; object-fit: contain;">
+                </div>
+
+                <div class="company-profile-box" style="margin-bottom: 0.4rem; padding: 0.5rem 0.85rem;">
+                    <p style="font-size: 0.8rem; line-height: 1.45; color: #334155; margin-bottom: 0;">
+                        توضح الصورة دورة عمل (سايكل) مشتريات الأصول الثابتة تحت قطاع الأصول الثابتة، والتي تتم بالتعاون
+                        بين عدة أقسام وجهات تشمل: الإدارة الطالبة، المورد، المشتريات، الإدارات المعنية، المخازن،
+                        والإدارة المالية. إليك شرح خطوات هذه الدورة بالتفصيل:
+                    </p>
+                </div>
+
+                <div class="process-flow-container" style="padding: 0.5rem 0.75rem; margin: 0.4rem 0;">
+                    <div class="process-flow-title" style="margin-bottom: 0.35rem;">
+                        <span>خطوات دورة مشتريات الأصول الثابتة:</span>
+                    </div>
+
+                    <div class="roles-bar" style="margin-bottom: 0.35rem; padding-bottom: 0.25rem;">
+                        <span class="role-badge r-1">الإدارة الطالبة</span>
+                        <span class="role-badge r-2">المورد</span>
+                        <span class="role-badge r-3">المشتريات</span>
+                        <span class="role-badge r-4">الإدارات المعنية</span>
+                        <span class="role-badge r-5">المخازن</span>
+                        <span class="role-badge r-6">الإدارة المالية</span>
+                    </div>
+
+                    <div class="flow-steps-grid" style="gap: 0.3rem;">
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">1</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">البداية وإرسال
+                                        المتطلبات</span>
+                                    <span class="flow-step-role">الإدارة الطالبة والمشتريات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تبدأ الدورة من الإدارة الطالبة بإرسال المتطلبات إلى المشتريات.<br>
+                                    • يقوم قسم المشتريات باستلام المتطلبات.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">2</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">طلب عروض الأسعار</span>
+                                    <span class="flow-step-role">المشتريات والمورد</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • تقوم المشتريات بإرسال طلب إلى الموردين لتحديد عروض الأسعار.<br>
+                                    • يستلم المورد طلب عرض السعر ثم يقوم بإرسال عروض الأسعار إلى المشتريات.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">3</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مقارنة عروض الأسعار</span>
+                                    <span class="flow-step-role">المشتريات</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يستلم قسم المشتريات عروض الأسعار ويقوم بمقارنتها، ويتفرع المسار إلى حالتين:<br>
+                                    • <strong>حالة الرفض:</strong> يتم إغلاق وأرشفة الطلب.<br>
+                                    • <strong>حالة المقبول:</strong> يتم إنشاء عرض سعر مع إرفاق عروض الأسعار الأخرى،
+                                    وإرسال طلب الموافقة والمراجعة.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">4</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">مراجعة الإدارات
+                                        المعنية</span>
+                                    <span class="flow-step-role">الإدارات المعنية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    يتم فحص عرض السعر مع مقارنة عروض الأسعار الأخرى من قِبل الإدارات المعنية، ويتفرع
+                                    إلى:<br>
+                                    • <strong>مرفوض:</strong> يتم إغلاق وأرشفة الطلب.<br>
+                                    • <strong>مقبول:</strong> يتم الانتقال للخطوة التالية.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">5</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">تحويل عرض السعر إلى أمر
+                                        توريد وفحص الأصل</span>
+                                    <span class="flow-step-role">المشتريات والمخازن</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يقوم قسم المشتريات بتحويل عرض السعر إلى أمر توريد.<br>
+                                    • ينتقل الأمر إلى المخازن لـ "معاينة الأصل وتجهيز محضر الفحص"، ويتفرع إلى:<br>
+                                    &nbsp;&nbsp;- <strong>رفض:</strong> يتم رفض وأرشفة الطلب مع إضافة سبب الرفض.<br>
+                                    &nbsp;&nbsp;- <strong>مطابق:</strong> يتم إرسال محضر الفحص إلى المشتريات للاستلام،
+                                    ويتم استلام الأصل وتوجيهه إلى المواقع أو الإدارات.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step-card" style="padding: 0.35rem 0.65rem;">
+                            <div class="flow-step-num" style="width: 22px; height: 22px; font-size: 0.75rem;">6</div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-header">
+                                    <span class="flow-step-title" style="font-size: 0.8rem;">المرحلة المالية
+                                        والنهاية</span>
+                                    <span class="flow-step-role">الإدارة المالية</span>
+                                </div>
+                                <p class="flow-step-desc" style="font-size: 0.75rem;">
+                                    • يتم إنشاء أمر توريد تم استلام الأصول المرفقة به في الإدارة المالية.<br>
+                                    • يتم إنشاء فاتورة مشتريات لتصل الدورة إلى النهاية.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper" style="margin-top: 0.4rem;">
+                    <h3 class="subsection-title" style="font-size: 0.85rem; margin-bottom: 0.3rem;">فئات وقواعد إهلاك
+                        الأصول الثابتة (Fixed Assets Setup)</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>فئة الأصل</th>
+                                <th>طريقة الإهلاك</th>
+                                <th>العمر الانتاجي (سنوات)</th>
+                                <th>حساب مصروف الإهلاك في GL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>وسائل النقل والسيارات</strong></td>
+                                <td>Straight Line (القسط الثابت)</td>
+                                <td>5 سنوات (20%)</td>
+                                <td><code>512001</code> - إهلاك سيارات الدورية</td>
+                            </tr>
+                            <tr>
+                                <td><strong>أجهزة التفتيش واللاسلكي</strong></td>
+                                <td>Straight Line (القسط الثابت)</td>
+                                <td>4 سنوات (25%)</td>
+                                <td><code>512002</code> - إهلاك المعدات الأمنية</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الأجهزة الإلكترونية والحاسب</strong></td>
+                                <td>Straight Line (القسط الثابت)</td>
+                                <td>3 سنوات (33.3%)</td>
+                                <td><code>512003</code> - إهلاك أجهزة الحاسب</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الأثاث والمعدات المكتبية</strong></td>
+                                <td>Straight Line (القسط الثابت)</td>
+                                <td>10 سنوات (10%)</td>
+                                <td><code>512004</code> - إهلاك الأثاث والمكاتب</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+
+            <footer class="page-footer">
+                <span>وثيقة تصميم الحلول - D365 Business Central</span>
+                <span>الصفحة 17 من 18</span>
+            </footer>
+        </section>
+
+
+        <!-- ================= PAGE 16: CLOSING COVER PAGE ================= -->
+        <section class="a4-page closing-page" id="page-16">
+            <!-- 3D Metallic Ribbon & Curved Shapes SVG -->
+            <svg class="closing-bg-ribbon" viewBox="0 0 794 1123" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="metalSilverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f1f5f9" />
+                        <stop offset="35%" stop-color="#cbd5e1" />
+                        <stop offset="65%" stop-color="#94a3b8" />
+                        <stop offset="100%" stop-color="#64748b" />
+                    </linearGradient>
+
+                    <linearGradient id="blueAccentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#3b82f6" />
+                        <stop offset="50%" stop-color="#1d4ed8" />
+                        <stop offset="100%" stop-color="#0f172a" />
+                    </linearGradient>
+
+                    <filter id="ribbonShadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.18" />
+                    </filter>
+                </defs>
+
+                <!-- Background Subtle Grid -->
+                <g stroke="#e2e8f0" stroke-width="0.75" opacity="0.4" stroke-dasharray="6,6">
+                    <line x1="0" y1="200" x2="794" y2="200" />
+                    <line x1="0" y1="600" x2="794" y2="600" />
+                    <line x1="0" y1="900" x2="794" y2="900" />
+                </g>
+
+                <!-- 3D Metallic Curves (Left Bottom Side) -->
+                <path d="M -100 1123 C 150 1000 250 800 120 550 C 20 350 -50 250 -100 150 Z"
+                    fill="url(#metalSilverGrad)" opacity="0.35" filter="url(#ribbonShadow)" />
+                <path d="M -50 1123 C 180 980 320 750 180 480 C 80 280 20 200 -50 100 Z" fill="url(#blueAccentGrad)"
+                    opacity="0.25" filter="url(#ribbonShadow)" />
+                <path d="M 0 1123 C 250 920 380 650 240 380 C 160 220 100 150 0 50 Z" fill="url(#metalSilverGrad)"
+                    opacity="0.15" />
+
+                <!-- Decorative Geometric Accents -->
+                <circle cx="680" cy="180" r="120" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
+                <circle cx="680" cy="180" r="80" fill="none" stroke="#2563eb" stroke-width="1.5"
+                    stroke-dasharray="8,8" />
+            </svg>
+
+            <!-- Hero Centered Logo & Slogan -->
+            <div class="closing-hero-content">
+                <img src="abc_logo.png" alt="ABC Counsel Logo" class="closing-logo-large">
+                <h2 class="closing-slogan">SPECIALIZED CONSULTING COMPANY</h2>
+            </div>
+
+            <!-- Bottom Left Info Box -->
+            <div class="closing-info-box">
+                <div class="closing-copyright-title">ABC Counsel</div>
+                <a href="https://www.abccounsel.com" target="_blank" class="closing-web-link">www.abccounsel.com</a>
+
+                <div class="closing-address-text">
+                    Building 245, Financial & Business District,<br>
+                    New Cairo, Cairo, Egypt
+                </div>
+
+                <div class="closing-email-text">
+                    Email: info@abccounsel.com
+                </div>
+            </div>
+
+            <!-- Footer Meta -->
+            <div class="page-footer closing-footer">
+                <span>© 2026 ABC Counsel. All Rights Reserved.</span>
+                <span>الصفحة 18 من 18 (End of Document)</span>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function filterContent() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toLowerCase();
+            var cards = document.querySelectorAll('.flow-step-card, .data-table tr, .company-profile-box');
+
+            cards.forEach(function (card) {
+                var text = card.textContent || card.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function scrollToTOC() {
+            var toc = document.getElementById('page-2');
+            if (toc) {
+                toc.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function exportToWord() {
+            var wrapper = document.querySelector('.doc-wrapper').cloneNode(true);
+
+            var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                "<head><meta charset='utf-8'><title>D365 Solution Design - Africa Company</title>" +
+                "<style>" +
+                "@page { size: 210mm 297mm; margin: 15mm 15mm 15mm 15mm; } " +
+                "body { font-family: 'Alexandria', 'Cairo', Arial, sans-serif; direction: rtl; text-align: right; color: #1e293b; } " +
+                ".a4-page { page-break-after: always; margin-bottom: 30px; padding: 10px; border-bottom: 2px dashed #ccc; } " +
+                ".page-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 15px; } " +
+                ".page-footer { display: flex; justify-content: space-between; border-top: 1px solid #cbd5e1; padding-top: 10px; margin-top: 20px; font-size: 11px; color: #64748b; } " +
+                "table { width: 100%; border-collapse: collapse; margin: 15px 0; } " +
+                "th { background-color: #0f172a; color: #ffffff; padding: 8px; border: 1px solid #cbd5e1; } " +
+                "td { padding: 8px; border: 1px solid #cbd5e1; } " +
+                ".company-profile-box, .exec-summary-box, .procurement-intro-box, .inventory-intro-box, .sales-intro-box { background: #ffffff; border-right: 4px solid #2563eb; border: 1px solid #cbd5e1; padding: 12px; margin-bottom: 15px; } " +
+                ".flow-step-card { border: 1px solid #cbd5e1; padding: 8px; margin-bottom: 8px; } " +
+                "img { max-width: 100%; height: auto; } " +
+                "</style></head><body>";
+            var footer = "</body></html>";
+
+            var html = header + wrapper.innerHTML + footer;
+
+            var blob = new Blob(['\ufeff' + html], {
+                type: 'application/msword;charset=utf-8'
+            });
+
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'D365_Business_Central_Solution_Design_Africa_Company.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+
+</html>

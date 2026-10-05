@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="340" viewBox="0 0 1000 340" xmlns="http://www.w3.org/2000/svg" font-family="'Cairo', 'Alexandria', 'Segoe UI', sans-serif">
+  <defs>
+    <!-- Dark Teal Theme Colors -->
+    <style>
+      .bg-header { fill: #0b4d6e; }
+      .lane-title-bg { fill: #0b4d6e; }
+      .node-bg { fill: #0b4d6e; }
+      .node-text { fill: #ffffff; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .header-title { fill: #ffffff; font-size: 18px; font-weight: 700; text-anchor: end; }
+      .header-subtitle { fill: #ffffff; font-size: 14px; font-weight: 500; text-anchor: end; }
+      .vertical-title { fill: #ffffff; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .flow-line { stroke: #0b4d6e; stroke-width: 1.5; fill: none; }
+      .label-text { fill: #0b4d6e; font-size: 12px; font-weight: 600; text-anchor: middle; }
+    </style>
+
+    <!-- Arrow Marker -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0b4d6e" />
+    </marker>
+  </defs>
+
+  <!-- Outer Border Frame -->
+  <rect x="0" y="0" width="1000" height="340" fill="#ffffff" stroke="#0b4d6e" stroke-width="2"/>
+
+  <!-- Top Header Bar -->
+  <rect x="0" y="0" width="1000" height="60" class="bg-header" />
+  <text x="980" y="27" class="header-title">الإدارة المالية</text>
+  <text x="980" y="48" class="header-subtitle">تمويل الخزنة</text>
+
+  <!-- Left Vertical Title Bar -->
+  <rect x="0" y="60" width="48" height="280" class="lane-title-bg" />
+  <line x1="0" y1="190" x2="48" y2="190" stroke="#ffffff" stroke-width="1" />
+
+  <!-- Vertical Labels -->
+  <g transform="translate(24, 125) rotate(-90)">
+    <text x="0" y="5" class="vertical-title">محاسب الخزنة</text>
+  </g>
+  <g transform="translate(24, 265) rotate(-90)">
+    <text x="0" y="5" class="vertical-title">الإدارة العليا</text>
+  </g>
+
+  <!-- Swimlane Divider Line -->
+  <line x1="48" y1="190" x2="1000" y2="190" stroke="#0b4d6e" stroke-width="1.2" />
+
+  <!-- ================= FLOW CONNECTORS ================= -->
+
+  <!-- Start -> Node 1 -->
+  <path d="M 880 125 L 835 125" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Node 1 -> Node 2 -->
+  <path d="M 705 125 L 645 125" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Node 2 -> Decision Diamond (Down) -->
+  <path d="M 580 155 L 580 230" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Decision -> Node 2 Rejection Loop (رفض) -->
+  <!-- Right out of diamond (640, 265) -> Right to 670 -> Up to 125 -> Left to 645 -->
+  <path d="M 640 265 L 670 265 L 670 125 L 645 125" class="flow-line" marker-end="url(#arrow)" />
+  <text x="682" y="210" class="label-text">رفض</text>
+
+  <!-- Decision -> Node 3 Approval (موافق) -->
+  <path d="M 520 265 L 480 265" class="flow-line" marker-end="url(#arrow)" />
+  <text x="500" y="258" class="label-text">موافق</text>
+
+  <!-- Node 3 -> Node 4 (Up) -->
+  <path d="M 415 235 L 415 155" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Node 4 -> Node 5 -->
+  <path d="M 365 125 L 315 125" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Node 5 -> End -->
+  <path d="M 185 125 L 135 125" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- ================= NODES ================= -->
+
+  <!-- Start Node (البداية) -->
+  <rect x="880" y="105" width="75" height="40" rx="20" class="node-bg" />
+  <text x="917.5" y="130" class="node-text">البداية</text>
+
+  <!-- Node 1: إنشاء طلب صرف عن طريق قيد -->
+  <rect x="705" y="95" width="130" height="60" rx="4" class="node-bg" />
+  <text x="770" y="123" class="node-text">إنشاء طلب صرف</text>
+  <text x="770" y="141" class="node-text">عن طريق قيد</text>
+
+  <!-- Node 2: إرسال الطلب إلى الإدارة العليا -->
+  <rect x="515" y="95" width="130" height="60" rx="4" class="node-bg" />
+  <text x="580" y="123" class="node-text">إرسال الطلب إلى</text>
+  <text x="580" y="141" class="node-text">الإدارة العليا</text>
+
+  <!-- Decision Node: موافقه ومراجعة (Diamond) -->
+  <polygon points="580,230 640,265 580,300 520,265" class="node-bg" />
+  <text x="580" y="270" class="node-text">موافقه ومراجعة</text>
+
+  <!-- Node 3: اعتماد شيك التحويل او القيد الخاص بتمويل الخزينة -->
+  <rect x="350" y="235" width="130" height="60" rx="4" class="node-bg" />
+  <text x="415" y="256" class="node-text">إعتماد شيك التحويل</text>
+  <text x="415" y="272" class="node-text">او القيد الخاص</text>
+  <text x="415" y="288" class="node-text">بتمويل الخزينة</text>
+
+  <!-- Node 4: ترحيل القيد -->
+  <rect x="365" y="95" width="100" height="60" rx="4" class="node-bg" />
+  <text x="415" y="131" class="node-text">ترحيل القيد</text>
+
+  <!-- Node 5: صرف المبلغ المطلوب وتمويل الخزينة -->
+  <rect x="185" y="95" width="130" height="60" rx="4" class="node-bg" />
+  <text x="250" y="123" class="node-text">صرف المبلغ</text>
+  <text x="250" y="139" class="node-text">المطلوب وتمويل</text>
+  <text x="250" y="155" class="node-text">الخزينة</text>
+
+  <!-- End Node (النهاية) -->
+  <rect x="55" y="105" width="80" height="40" rx="20" class="node-bg" />
+  <text x="95" y="130" class="node-text">النهاية</text>
+
+</svg>

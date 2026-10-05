@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="580" viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg" font-family="'Cairo', 'Alexandria', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg-header { fill: #0b4d6e; }
+      .lane-title-bg { fill: #0b4d6e; }
+      .node-bg { fill: #0b4d6e; }
+      .node-white { fill: #ffffff; stroke: #0b4d6e; stroke-width: 1.5; }
+      .node-text { fill: #ffffff; font-size: 11.5px; font-weight: 600; text-anchor: middle; }
+      .node-text-dark { fill: #0b4d6e; font-size: 11.5px; font-weight: 600; text-anchor: middle; }
+      .header-title { fill: #ffffff; font-size: 18px; font-weight: 700; text-anchor: end; }
+      .header-subtitle { fill: #ffffff; font-size: 14px; font-weight: 500; text-anchor: end; }
+      .vertical-title { fill: #ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .flow-line { stroke: #0b4d6e; stroke-width: 1.5; fill: none; }
+      .label-text { fill: #0b4d6e; font-size: 11px; font-weight: 700; text-anchor: middle; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0b4d6e" />
+    </marker>
+  </defs>
+
+  <!-- Outer Frame -->
+  <rect x="0" y="0" width="1000" height="580" fill="#ffffff" stroke="#0b4d6e" stroke-width="2"/>
+  
+  <!-- Header Bar -->
+  <rect x="0" y="0" width="1000" height="55" class="bg-header" />
+  <text x="980" y="24" class="header-title">الإدارة المالية</text>
+  <text x="980" y="44" class="header-subtitle">الخزينة – إستلام وتسوية العهد</text>
+
+  <!-- Left Vertical Swimlane Titles Bar -->
+  <rect x="0" y="55" width="48" height="525" class="lane-title-bg" />
+  
+  <!-- Swimlane Dividers in Left Bar -->
+  <line x1="0" y1="180" x2="48" y2="180" stroke="#ffffff" stroke-width="1" />
+  <line x1="0" y1="305" x2="48" y2="305" stroke="#ffffff" stroke-width="1" />
+  <line x1="0" y1="430" x2="48" y2="430" stroke="#ffffff" stroke-width="1" />
+
+  <!-- Vertical Swimlane Titles -->
+  <g transform="translate(24, 117.5) rotate(-90)">
+    <text x="0" y="4" class="vertical-title">الموظف/العمليات</text>
+  </g>
+  <g transform="translate(24, 242.5) rotate(-90)">
+    <text x="0" y="4" class="vertical-title">محاسب الخزنة</text>
+  </g>
+  <g transform="translate(24, 367.5) rotate(-90)">
+    <text x="0" y="4" class="vertical-title">الإدارة العليا</text>
+  </g>
+  <g transform="translate(24, 492.5) rotate(-90)">
+    <text x="0" y="4" class="vertical-title">الإدارة المالية</text>
+  </g>
+
+  <!-- Main Swimlane Horizontal Dividers -->
+  <line x1="48" y1="180" x2="1000" y2="180" stroke="#0b4d6e" stroke-width="1.2" />
+  <line x1="48" y1="305" x2="1000" y2="305" stroke="#0b4d6e" stroke-width="1.2" />
+  <line x1="48" y1="430" x2="1000" y2="430" stroke="#0b4d6e" stroke-width="1.2" />
+
+  <!-- ================= FLOW CONNECTIONS ================= -->
+
+  <!-- Lane 1: Start -> Node 1.2 -->
+  <path d="M 890 117.5 L 860 117.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 1: Node 1.2 -> Node 1.3 -->
+  <path d="M 760 117.5 L 730 117.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 1 to 2: Node 1.3 -> Node 2.1 (Down) -->
+  <path d="M 680 142.5 L 680 217.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 2: Node 2.1 -> Node 2.2 -->
+  <path d="M 625 242.5 L 600 242.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 2 to 3: Node 2.2 -> Diamond 3.1 (Down) -->
+  <path d="M 550 267.5 L 550 342.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 3 to 2: Diamond 3.1 -> Node 2.2 (Up: رفض) -->
+  <path d="M 590 367.5 L 615 367.5 L 615 267.5 L 600 267.5" class="flow-line" marker-end="url(#arrow)" />
+  <text x="630" y="320" class="label-text">رفض</text>
+
+  <!-- Lane 3: Diamond 3.1 -> Node 3.2 (Left: موافقة) -->
+  <path d="M 510 367.5 L 490 367.5" class="flow-line" marker-end="url(#arrow)" />
+  <text x="500" y="360" class="label-text">موافقة</text>
+
+  <!-- Lane 3 to 2: Node 3.2 -> Node 2.3 (Up) -->
+  <path d="M 445 342.5 L 445 267.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 2: Node 2.3 -> Node 2.4 -->
+  <path d="M 400 242.5 L 390 242.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 2 to 1: Node 2.4 -> Node 1.4 (Up) -->
+  <path d="M 350 217.5 L 350 142.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 1: Node 1.4 -> Node 1.5 -->
+  <path d="M 310 117.5 L 280 117.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 1 to 4: Node 1.5 -> Node 4.1 (Down to Lane 4) -->
+  <path d="M 235 142.5 L 235 467.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 4: Node 4.1 -> Node 4.2 -->
+  <path d="M 190 492.5 L 150 492.5" class="flow-line" marker-end="url(#arrow)" />
+
+  <!-- Lane 4 to 2: Node 4.2 -> Node 2.5 (Up to Lane 2) -->
+  <path d="M 105 467.5 L 105 267.5" class="flow-line" marker-end="url(#arrow)" />
+
+
+  <!-- ================= NODES ================= -->
+
+  <!-- LANE 1 NODES -->
+  <!-- Start -->
+  <rect x="890" y="100" width="65" height="35" rx="17.5" class="node-bg" />
+  <text x="922.5" y="122" class="node-text">البداية</text>
+
+  <!-- Node 1.2 (White process box) -->
+  <path d="M 760 92.5 H 860 V 142.5 H 760 Z" class="node-white" />
+  <text x="810" y="122" class="node-text-dark">إنشاء طلب صرف</text>
+
+  <!-- Node 1.3 -->
+  <rect x="630" y="92.5" width="100" height="50" rx="4" class="node-bg" />
+  <text x="680" y="115" class="node-text">إرسال الطلب إلي</text>
+  <text x="680" y="130" class="node-text">محاسب الخزنة</text>
+
+  <!-- Node 1.4 -->
+  <rect x="310" y="92.5" width="80" height="50" rx="4" class="node-bg" />
+  <text x="350" y="115" class="node-text">إستلام العهده</text>
+  <text x="350" y="130" class="node-text">المحدده</text>
+
+  <!-- Node 1.5 -->
+  <rect x="190" y="92.5" width="90" height="50" rx="4" class="node-bg" />
+  <text x="235" y="112" class="node-text">إرسال المستندات الخاصه</text>
+  <text x="235" y="125" class="node-text">بالتسوية وإثباتها في</text>
+  <text x="235" y="138" class="node-text">الإدارة المالية</text>
+
+
+  <!-- LANE 2 NODES -->
+  <!-- Node 2.1 -->
+  <rect x="625" y="217.5" width="115" height="50" rx="4" class="node-bg" />
+  <text x="682.5" y="240" class="node-text">مراجعة الطلب وإخشاء قيد</text>
+  <text x="682.5" y="254" class="node-text">تسوية</text>
+
+  <!-- Node 2.2 -->
+  <rect x="500" y="217.5" width="100" height="50" rx="4" class="node-bg" />
+  <text x="550" y="235" class="node-text">إرسال الطلب إلى الإداره</text>
+  <text x="550" y="249" class="node-text">العليا للمراجعه</text>
+  <text x="550" y="263" class="node-text">والموافقه</text>
+
+  <!-- Node 2.3 -->
+  <rect x="400" y="217.5" width="90" height="50" rx="4" class="node-bg" />
+  <text x="445" y="238" class="node-text">عمل سند قبض من قبل</text>
+  <text x="445" y="252" class="node-text">محاسب الخزينة</text>
+
+  <!-- Node 2.4 -->
+  <rect x="310" y="217.5" width="80" height="50" rx="4" class="node-bg" />
+  <text x="350" y="240" class="node-text">صرف العهده</text>
+  <text x="350" y="254" class="node-text">للموظف</text>
+
+  <!-- Node 2.5 -->
+  <rect x="60" y="217.5" width="90" height="50" rx="4" class="node-bg" />
+  <text x="105" y="238" class="node-text">تسوية العهده سواء</text>
+  <text x="105" y="252" class="node-text">له أو عليه</text>
+
+
+  <!-- LANE 3 NODES -->
+  <!-- Diamond 3.1 -->
+  <polygon points="550,342.5 590,367.5 550,392.5 510,367.5" class="node-bg" />
+  <text x="550" y="371" class="node-text">المراجعة والموافقه</text>
+
+  <!-- Node 3.2 -->
+  <rect x="400" y="342.5" width="90" height="50" rx="4" class="node-bg" />
+  <text x="445" y="364" class="node-text">إرسال الموافقه إلى</text>
+  <text x="445" y="378" class="node-text">محاسب الخزينة</text>
+
+
+  <!-- LANE 4 NODES -->
+  <!-- Node 4.1 -->
+  <rect x="190" y="467.5" width="90" height="50" rx="4" class="node-bg" />
+  <text x="235" y="490" class="node-text">إستلام المستندات</text>
+  <text x="235" y="504" class="node-text">ومراجعتها</text>
+
+  <!-- Node 4.2 -->
+  <rect x="60" y="467.5" width="90" height="50" rx="4" class="node-bg" />
+  <text x="105" y="490" class="node-text">إرسال الإعتماد إلى</text>
+  <text x="105" y="504" class="node-text">الخزينة</text>
+
+</svg>
